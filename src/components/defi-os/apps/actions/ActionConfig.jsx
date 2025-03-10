@@ -21,9 +21,16 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
     collateral: '',
     loanAmount: '',
     recipients: '',
-    distributionType: 'equal'
+    distributionType: 'equal',
+    // Injective specific fields
+    chain: 'injective',
+    factionId: '',
+    missionId: '',
+    postUrl: '',
+    stakeAmount: '',
+    stakeDuration: '30'
   });
-  
+
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
 
@@ -38,14 +45,14 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
     switch (service.id) {
       case 'wallet':
         return renderWalletFields();
-      case 'cetus':
-        return renderCetusFields();
-      case 'bluefin':
-        return renderBluefinFields();
-      case 'suilend':
-        return renderSuilendFields();
-      case 'navi':
-        return renderNaviFields();
+      case 'helix':
+        return renderHelixFields();
+      case 'astroport':
+        return renderAstroportFields();
+      case 'gryphon':
+        return renderGryphonFields();
+      case 'ninjagarden':
+        return renderNinjaGardenFields();
       case 'twitter':
         return renderTwitterFields();
       default:
@@ -66,7 +73,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="text"
                 placeholder="Enter token symbol or address"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -83,7 +90,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter amount to send"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -100,7 +107,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="text"
                 placeholder="Enter recipient's wallet address"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -123,7 +130,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="text"
                 placeholder="Enter token symbol or address"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -140,7 +147,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter total amount to distribute"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -156,7 +163,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               <textarea
                 placeholder="Enter wallet addresses (one per line)"
                 className="w-full p-3 rounded-lg resize-none h-32"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -174,7 +181,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <select
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -191,7 +198,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
     }
   };
 
-  const renderCetusFields = () => {
+  const renderHelixFields = () => {
     switch (action.id) {
       case 'swap':
         return (
@@ -202,9 +209,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter token symbol or address (e.g., INJ)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -221,7 +228,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter amount"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -236,9 +243,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter token symbol or address (e.g., USDT)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -255,7 +262,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="0.5"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -276,9 +283,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter token symbol or address (e.g., INJ)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -295,7 +302,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter amount"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -310,9 +317,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter token symbol or address (e.g., USDT)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -329,7 +336,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter amount"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -350,9 +357,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="Enter pool address"
+                placeholder="Enter pool address or token pair (e.g., INJ-USDT)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -367,9 +374,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="number"
-                placeholder="Enter percentage"
+                placeholder="Enter percentage (e.g., 50 for 50%)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -380,10 +387,89 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
             </div>
           </div>
         );
+
+      case 'trade-perpetuals':
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Trading Pair
+              </label>
+              <input
+                type="text"
+                placeholder="e.g., BTC-USDT"
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.token}
+                onChange={(e) => setConfig({ ...config, token: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Position Type
+              </label>
+              <select
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.position}
+                onChange={(e) => setConfig({ ...config, position: e.target.value })}
+              >
+                <option value="long">Long</option>
+                <option value="short">Short</option>
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Position Size
+              </label>
+              <input
+                type="number"
+                placeholder="Enter position size"
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.amount}
+                onChange={(e) => setConfig({ ...config, amount: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Leverage
+              </label>
+              <select
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.leverage}
+                onChange={(e) => setConfig({ ...config, leverage: e.target.value })}
+              >
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="5">5x</option>
+                <option value="10">10x</option>
+                <option value="20">20x</option>
+              </select>
+            </div>
+          </div>
+        );
     }
   };
 
-  const renderBluefinFields = () => {
+  const renderAstroportFields = () => {
     switch (action.id) {
       case 'swap':
         return (
@@ -394,9 +480,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., SUI"
+                placeholder="Enter token symbol or address (e.g., INJ)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -413,7 +499,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="Enter amount"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -428,9 +514,9 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               </label>
               <input
                 type="text"
-                placeholder="e.g., USDC"
+                placeholder="Enter token symbol or address (e.g., ASTRO)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -447,7 +533,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
                 type="number"
                 placeholder="0.5"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -458,146 +544,235 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
             </div>
           </div>
         );
-      case 'open-long':
-      case 'open-short':
+
+      case 'add-liquidity':
+      case 'remove-liquidity':
         return (
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Trading Pair
+                First Token
               </label>
               <input
                 type="text"
-                placeholder="e.g., BTC-USDC"
+                placeholder="Enter token symbol or address (e.g., INJ)"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.token}
-                onChange={(e) => setConfig({ ...config, token: e.target.value })}
+                value={config.tokenIn}
+                onChange={(e) => setConfig({ ...config, tokenIn: e.target.value })}
               />
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Position Size
+                {action.id === 'add-liquidity' ? 'First Token Amount' : 'Percentage to Remove'}
               </label>
               <input
                 type="number"
-                placeholder="Enter position size"
+                placeholder={action.id === 'add-liquidity' ? "Enter amount" : "Enter percentage (e.g., 50 for 50%)"}
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.amount}
-                onChange={(e) => setConfig({ ...config, amount: e.target.value })}
+                value={action.id === 'add-liquidity' ? config.amountIn : config.percentage}
+                onChange={(e) => setConfig({
+                  ...config,
+                  [action.id === 'add-liquidity' ? 'amountIn' : 'percentage']: e.target.value
+                })}
+              />
+            </div>
+            {action.id === 'add-liquidity' && (
+              <>
+                <div>
+                  <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                    Second Token
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter token symbol or address (e.g., ASTRO)"
+                    className="w-full p-3 rounded-lg"
+                    style={{
+                      backgroundColor: theme.colors.secondary,
+                      color: theme.colors.text.primary,
+                      border: `1px solid ${theme.colors.border}`
+                    }}
+                    value={config.tokenOut}
+                    onChange={(e) => setConfig({ ...config, tokenOut: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                    Second Token Amount
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Enter amount"
+                    className="w-full p-3 rounded-lg"
+                    style={{
+                      backgroundColor: theme.colors.secondary,
+                      color: theme.colors.text.primary,
+                      border: `1px solid ${theme.colors.border}`
+                    }}
+                    value={config.amountOut}
+                    onChange={(e) => setConfig({ ...config, amountOut: e.target.value })}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        );
+
+      case 'cross-chain':
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Source Chain
+              </label>
+              <select
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.chain}
+                onChange={(e) => setConfig({ ...config, chain: e.target.value })}
+              >
+                <option value="injective">Injective</option>
+                <option value="cosmos">Cosmos</option>
+                <option value="ethereum">Ethereum</option>
+                <option value="osmosis">Osmosis</option>
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Destination Chain
+              </label>
+              <select
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.destChain}
+                onChange={(e) => setConfig({ ...config, destChain: e.target.value })}
+              >
+                <option value="injective">Injective</option>
+                <option value="cosmos">Cosmos</option>
+                <option value="ethereum">Ethereum</option>
+                <option value="osmosis">Osmosis</option>
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Token to Swap
+              </label>
+              <input
+                type="text"
+                placeholder="Enter token symbol or address"
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.tokenIn}
+                onChange={(e) => setConfig({ ...config, tokenIn: e.target.value })}
               />
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Leverage
+                Amount to Swap
               </label>
-              <select
+              <input
+                type="number"
+                placeholder="Enter amount"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.leverage}
-                onChange={(e) => setConfig({ ...config, leverage: e.target.value })}
+                value={config.amountIn}
+                onChange={(e) => setConfig({ ...config, amountIn: e.target.value })}
+              />
+            </div>
+          </div>
+        );
+    }
+  };
+
+  const renderGryphonFields = () => {
+    switch (action.id) {
+      case 'stake':
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Amount to Stake (INJ)
+              </label>
+              <input
+                type="number"
+                placeholder="Enter amount to stake"
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.stakeAmount}
+                onChange={(e) => setConfig({ ...config, stakeAmount: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                Staking Duration (days)
+              </label>
+              <select
+                className="w-full p-3 rounded-lg"
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border}`
+                }}
+                value={config.stakeDuration}
+                onChange={(e) => setConfig({ ...config, stakeDuration: e.target.value })}
               >
-                <option value="1">1x</option>
-                <option value="2">2x</option>
-                <option value="5">5x</option>
-                <option value="10">10x</option>
+                <option value="7">7 days</option>
+                <option value="14">14 days</option>
+                <option value="30">30 days</option>
+                <option value="90">90 days</option>
+                <option value="365">365 days</option>
               </select>
             </div>
           </div>
         );
-    }
-  };
 
-  const renderSuilendFields = () => {
-    switch (action.id) {
-      case 'supply':
+      case 'unstake':
         return (
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Asset to Supply
-              </label>
-              <input
-                type="text"
-                placeholder="Enter token symbol or address"
-                className="w-full p-3 rounded-lg"
-                style={{ 
-                  backgroundColor: theme.colors.secondary,
-                  color: theme.colors.text.primary,
-                  border: `1px solid ${theme.colors.border}`
-                }}
-                value={config.token}
-                onChange={(e) => setConfig({ ...config, token: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Amount
+                Amount to Unstake
               </label>
               <input
                 type="number"
-                placeholder="Enter amount to supply"
+                placeholder="Enter amount to unstake"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.amount}
-                onChange={(e) => setConfig({ ...config, amount: e.target.value })}
-              />
-            </div>
-          </div>
-        );
-
-      case 'borrow':
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Asset to Borrow
-              </label>
-              <input
-                type="text"
-                placeholder="Enter token symbol or address"
-                className="w-full p-3 rounded-lg"
-                style={{ 
-                  backgroundColor: theme.colors.secondary,
-                  color: theme.colors.text.primary,
-                  border: `1px solid ${theme.colors.border}`
-                }}
-                value={config.token}
-                onChange={(e) => setConfig({ ...config, token: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Amount
-              </label>
-              <input
-                type="number"
-                placeholder="Enter amount to borrow"
-                className="w-full p-3 rounded-lg"
-                style={{ 
-                  backgroundColor: theme.colors.secondary,
-                  color: theme.colors.text.primary,
-                  border: `1px solid ${theme.colors.border}`
-                }}
-                value={config.amount}
-                onChange={(e) => setConfig({ ...config, amount: e.target.value })}
+                value={config.stakeAmount}
+                onChange={(e) => setConfig({ ...config, stakeAmount: e.target.value })}
               />
             </div>
           </div>
@@ -605,37 +780,37 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
     }
   };
 
-  const renderNaviFields = () => {
+  const renderNinjaGardenFields = () => {
     switch (action.id) {
-      case 'supply':
+      case 'join-faction':
         return (
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Asset to Supply
+                Creator Name/ID
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter creator name or ID"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.token}
-                onChange={(e) => setConfig({ ...config, token: e.target.value })}
+                value={config.factionId}
+                onChange={(e) => setConfig({ ...config, factionId: e.target.value })}
               />
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Amount
+                Amount of INJ to Spend
               </label>
               <input
                 type="number"
-                placeholder="Enter amount to supply"
+                placeholder="Enter amount of INJ for keys"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -647,41 +822,41 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
           </div>
         );
 
-      case 'borrow':
+      case 'engage-mission':
         return (
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Asset to Borrow
+                Mission ID
               </label>
               <input
                 type="text"
-                placeholder="Enter token symbol or address"
+                placeholder="Enter mission ID"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.token}
-                onChange={(e) => setConfig({ ...config, token: e.target.value })}
+                value={config.missionId}
+                onChange={(e) => setConfig({ ...config, missionId: e.target.value })}
               />
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                Amount
+                Post URL
               </label>
               <input
-                type="number"
-                placeholder="Enter amount to borrow"
+                type="text"
+                placeholder="Enter Twitter/X post URL to engage with"
                 className="w-full p-3 rounded-lg"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
                 }}
-                value={config.amount}
-                onChange={(e) => setConfig({ ...config, amount: e.target.value })}
+                value={config.postUrl}
+                onChange={(e) => setConfig({ ...config, postUrl: e.target.value })}
               />
             </div>
           </div>
@@ -701,7 +876,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               <textarea
                 placeholder="Enter your tweet message"
                 className="w-full p-3 rounded-lg resize-none h-32"
-                style={{ 
+                style={{
                   backgroundColor: theme.colors.secondary,
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border}`
@@ -720,10 +895,10 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
     try {
       setStatus('loading');
       setError('');
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Pass the actual config values, not the action object
       console.log('ActionConfig saving:', { action, config });
       onSave(action, {
@@ -745,7 +920,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
         distributionType: config.distributionType
       });
       setStatus('success');
-      
+
     } catch (err) {
       setStatus('error');
       setError(err.message || 'Failed to save action');
@@ -776,7 +951,7 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
       <div className="flex-1 overflow-auto p-6">
         <div className="max-w-2xl mx-auto">
           {renderConfigFields()}
-          
+
           {/* Error Message */}
           {error && (
             <div className="mt-4 flex items-center gap-2 text-sm" style={{ color: theme.colors.error }}>
@@ -784,11 +959,11 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
               <span>{error}</span>
             </div>
           )}
-          
+
           {/* Save Button */}
           <animated.button
             className="w-full mt-6 p-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
-            style={{ 
+            style={{
               ...buttonAnimation,
               backgroundColor: theme.colors.accent,
               color: theme.colors.text.onAccent
@@ -809,4 +984,4 @@ const ActionConfig = ({ theme, service, action, onBack, onSave }) => {
   );
 };
 
-export default ActionConfig; 
+export default ActionConfig;

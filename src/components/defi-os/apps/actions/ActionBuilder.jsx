@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Waves, Wallet, Twitter, BarChart2, PiggyBank, Send, Repeat, Plus, Minus, MessageSquare, Share2 } from 'lucide-react';
+import { ArrowLeft, Search, Waves, Wallet, Twitter, BarChart2, PiggyBank, Send, Repeat, Plus, Minus, MessageSquare, Share2, Globe, Zap, ArrowsLeftRight } from 'lucide-react';
 import { useSpring, animated, useTransition } from '@react-spring/web';
 import ActionList from './ActionList';
 
@@ -30,109 +30,123 @@ const actionServices = [
       }
     ]
   },
-  { 
-    id: 'cetus', 
-    name: 'Cetus', 
-    description: 'Swap, add/remove liquidity on Cetus DEX',
-    icon: Waves, 
+  {
+    id: 'helix',
+    name: 'Helix',
+    description: 'Trade and provide liquidity on Injective\'s premier DEX',
+    icon: Waves,
     color: '#6C5CE7',
     actions: [
       {
         id: 'swap',
         title: 'Swap tokens',
-        description: 'Swap one token for another on Cetus',
-        isPro: true,
+        description: 'Swap one token for another on Helix',
+        isPro: false,
         icon: Repeat
       },
       {
         id: 'add-liquidity',
         title: 'Add liquidity',
-        description: 'Add liquidity to a pool on Cetus',
+        description: 'Add liquidity to a pool on Helix',
         isPro: true,
         icon: Plus
       },
       {
         id: 'remove-liquidity',
         title: 'Remove liquidity',
-        description: 'Remove liquidity from a pool on Cetus',
+        description: 'Remove liquidity from a pool on Helix',
         isPro: true,
         icon: Minus
+      },
+      {
+        id: 'trade-perpetuals',
+        title: 'Trade perpetuals',
+        description: 'Open positions in perpetual markets on Helix',
+        isPro: true,
+        icon: BarChart2
       }
     ]
   },
   {
-    id: 'bluefin',
-    name: 'Bluefin',
-    description: 'Trade perpetuals on Bluefin',
-    icon: BarChart2,
+    id: 'astroport',
+    name: 'Astroport',
+    description: 'Multi-chain DEX with advanced features on Injective',
+    icon: Globe,
     color: '#0984E3',
     actions: [
       {
         id: 'swap',
         title: 'Swap tokens',
-        description: 'Swap tokens on Bluefin',
-        isPro: true,
+        description: 'Swap tokens on Astroport',
+        isPro: false,
         icon: Repeat
       },
       {
-        id: 'open-long',
-        title: 'Open long position',
-        description: 'Open a long position on Bluefin',
+        id: 'add-liquidity',
+        title: 'Add liquidity',
+        description: 'Add liquidity to a pool on Astroport',
         isPro: true,
         icon: Plus
       },
       {
-        id: 'open-short',
-        title: 'Open short position',
-        description: 'Open a short position on Bluefin',
+        id: 'remove-liquidity',
+        title: 'Remove liquidity',
+        description: 'Remove liquidity from a pool on Astroport',
         isPro: true,
         icon: Minus
+      },
+      {
+        id: 'cross-chain',
+        title: 'Cross-chain swap',
+        description: 'Swap tokens across different chains',
+        isPro: true,
+        icon: ArrowsLeftRight
       }
     ]
   },
   {
-    id: 'suilend',
-    name: 'Suilend',
-    description: 'Lending and borrowing on Suilend',
-    icon: PiggyBank,
+    id: 'gryphon',
+    name: 'Gryphon',
+    description: 'Liquid staking platform on Injective',
+    icon: Zap,
     color: '#1E90FF',
     actions: [
       {
-        id: 'supply',
-        title: 'Supply assets',
-        description: 'Supply assets to Suilend',
+        id: 'stake',
+        title: 'Stake INJ',
+        description: 'Stake INJ tokens for liquid staking derivatives',
         isPro: true,
         icon: Plus
       },
       {
-        id: 'borrow',
-        title: 'Borrow assets',
-        description: 'Borrow assets from Suilend',
+        id: 'unstake',
+        title: 'Unstake INJ',
+        description: 'Unstake INJ from the liquid staking protocol',
         isPro: true,
         icon: Minus
       }
     ]
   },
   {
-    id: 'navi',
-    name: 'Navi',
-    description: 'Lending and borrowing on Navi',
+    id: 'ninjagarden',
+    name: 'Ninja Garden',
+    description: 'Social-Fi engage-to-earn platform on Injective',
     icon: PiggyBank,
     color: '#00B894',
     actions: [
       {
-        id: 'supply',
-        title: 'Supply assets',
-        description: 'Supply assets to Navi',
+        id: 'join-faction',
+        title: 'Join Faction',
+        description: 'Join a faction by purchasing creator keys',
         isPro: true,
         icon: Plus
       },
       {
-        id: 'borrow',
-        title: 'Borrow assets',
-        description: 'Borrow assets from Navi',
+        id: 'engage-mission',
+        title: 'Engage Mission',
+        description: 'Engage with posts to earn points',
         isPro: true,
-        icon: Minus
+        icon: Twitter
       }
     ]
   },
@@ -166,16 +180,16 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
   const [selectedService, setSelectedService] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
 
-  const filteredServices = actionServices.filter(service => 
+  const filteredServices = actionServices.filter(service =>
     service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Service box with animations
   const ServiceBox = ({ service }) => {
     if (!service) return null;
-    
+
     const [pressed, setPressed] = useState(false);
-    
+
     const pressAnimation = useSpring({
       transform: pressed ? 'scale(0.95)' : 'scale(1)',
       config: { tension: 300, friction: 10 }
@@ -186,7 +200,7 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
     return (
       <animated.button
         className="flex flex-col items-center justify-center p-4 rounded-xl transition-colors hover:scale-105"
-        style={{ 
+        style={{
           ...pressAnimation,
           backgroundColor: theme.colors.secondary,
           backgroundImage: 'none',
@@ -251,7 +265,7 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
       {/* Search */}
       <div className="p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" 
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                  style={{ color: theme.colors.text.secondary }} />
           <input
             type="text"
@@ -259,7 +273,7 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 rounded-xl"
-            style={{ 
+            style={{
               backgroundColor: theme.colors.secondary,
               color: theme.colors.text.primary,
               border: `1px solid ${theme.colors.border}`
@@ -270,9 +284,9 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
 
       {/* Services Grid */}
       <div className="flex-1 overflow-auto p-4">
-        <div 
+        <div
           className="grid gap-3 mx-auto relative"
-          style={{ 
+          style={{
             gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
             maxWidth: isExpanded ? '1200px' : '800px'
           }}
@@ -288,4 +302,4 @@ const ActionBuilder = ({ theme, onBack, onSaveAction, isExpanded }) => {
   );
 };
 
-export default ActionBuilder; 
+export default ActionBuilder;
