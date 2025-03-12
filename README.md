@@ -11,12 +11,7 @@
 - [Integrations](#integrations)
   - [Injective Network](#injective-network)
   - [Helix](#helix)
-    - [Market Data Access](#market-data-access)
-    - [Trading Capabilities](#trading-capabilities)
-    - [Liquidity Provision](#liquidity-provision)
-    - [IFTTT System](#ifttt-system)
   - [Astroport](#astroport)
-  - [Frontrunner](#frontrunner)
 - [NordStar Integrations](#nordstar-integrations)
   - [Trend Analysis](#trend-analysis)
   - [Technical Analysis](#technical-analysis)
@@ -320,41 +315,15 @@ The Astroport integration enables sophisticated cross-chain strategies that can 
 
 The Astroport integration enables seamless cross-chain swaps, allowing users to trade assets across different Cosmos chains. The interface shows the optimal route, estimated fees, and expected return amount.
 
-![Markets](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-swap.png)
+![Astroport swap](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-swap.png)
 
 
 The Pools tab provides an overview of all available liquidity pools across different chains. Users can see key metrics like Total Value Locked, APR, and 24-hour trading volume. The integration supports different pool types including Constant Product pools, Stableswap pools, and Concentrated Liquidity pools.
 
-![Markets](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-pools.png)
+![Astroport pools](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-pools.png)
 
 This implementation provides the foundation for Pool Protocol's advanced cross-chain capabilities, allowing users to seamlessly access liquidity across the Cosmos ecosystem through a unified interface.
 
-### Frontrunner
-Frontrunner is an innovative perpetual DEX on Injective that specializes in derivatives trading with advanced features for professional traders. Pool Protocol's integration with Frontrunner enables users to execute sophisticated trading strategies through our automated trading system.
-
-The integration is designed to leverage Frontrunner's key capabilities:
-
-1. **Perpetual Futures Trading**
-   - Access to leveraged trading positions on Injective
-   - Support for long and short positions
-   - Automated position entry and exit based on market conditions
-
-2. **Risk Management Tools**
-   - Automated stop-loss and take-profit execution
-   - Position sizing based on portfolio risk parameters
-   - Liquidation protection through conditional orders
-
-3. **Advanced Order Types**
-   - Limit, market, and conditional orders
-   - Time-weighted average price (TWAP) execution
-   - Multi-leg strategy execution
-
-The current demonstration showcases the potential for condition-based trading strategies:
-
-```
-If $INJ is below is $15.00 dollars
-Then enter long position with 0.2 INJ
-```
 
 ## NordStar Integrations
 
