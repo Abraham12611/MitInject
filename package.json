@@ -4,7 +4,10 @@
   "private": true,
   "pnpm": {
     "overrides": {
-      "usb": "npm:@abandoned/usb@^2.0.0"
+      "@solana/web3.js": "1.77.3",
+      "usb": "npm:@abandonware/usb@^2.0.2",
+      "@trezor/connect-web": "9.0.5",
+      "ws": "^8.18.0"
     }
   },
   "scripts": {
