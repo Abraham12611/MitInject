@@ -8,9 +8,9 @@
       "usb": "npm:@abandonware/usb@^2.0.2",
       "@trezor/connect-web": "9.0.5",
       "ws": "^8.18.0",
-      "@magic-sdk/provider": "^29.0.1",
-      "@magic-sdk/types": "24.18.0",
-      "magic-sdk": "^28.21.1",
+      "@magic-sdk/provider": "29.0.0",
+      "@magic-sdk/types": "29.0.0",
+      "magic-sdk": "29.0.0",
       "@injectivelabs/wallet-ts": "^1.14.41",
       "@injectivelabs/sdk-ts": "^1.14.41",
       "@injectivelabs/networks": "^1.14.41",
@@ -20,9 +20,9 @@
     }
   },
   "resolutions": {
-    "@magic-sdk/provider": "^29.0.1",
-    "@magic-sdk/types": "24.18.0",
-    "magic-sdk": "^28.21.1"
+    "@magic-sdk/provider": "29.0.0",
+    "@magic-sdk/types": "29.0.0",
+    "magic-sdk": "29.0.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -43,9 +43,9 @@
     "@injectivelabs/ts-types": "^1.14.41",
     "@injectivelabs/utils": "^1.14.41",
     "@injectivelabs/wallet-ts": "^1.14.41",
-    "@magic-sdk/provider": "^29.0.1",
-    "@magic-sdk/types": "24.18.0",
-    "magic-sdk": "^28.21.1",
+    "@magic-sdk/provider": "29.0.0",
+    "@magic-sdk/types": "29.0.0",
+    "magic-sdk": "29.0.0",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@mui/styles": "^6.4.6",
