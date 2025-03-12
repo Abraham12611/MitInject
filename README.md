@@ -185,34 +185,149 @@ The IFTTT system allows users to create conditional strategies. Behind the scene
 This integration provides the foundation for Pool Protocol's advanced automated trading strategies, allowing users to create sophisticated conditional workflows with minimal configuration.
 
 ### Astroport
-Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. This integration enables users to access liquid trading pools across multiple Cosmos-based chains, including Terra and Injective.
+Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. Our comprehensive integration provides access to liquidity pools across multiple Cosmos-based chains including Injective, Terra, and Osmosis, enabling sophisticated cross-chain trading and asset management.
 
-The integration with Astroport is designed to work seamlessly with our automation system, allowing for condition-based trading and liquidity provision. Our mock implementation demonstrates these capabilities as we continue developing the full integration.
+Implementation details can be found here:
+- [Types and Interfaces](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/types.ts): Core type definitions for assets, pools, and transactions
+- [Configuration](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/config.ts): Network settings for Astroport on Injective
+- [Liquidity Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/liquidity.ts): Pool interactions and swap functionality
+- [Portfolio Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/portfolio.ts): Position tracking and risk metrics
+- [Transaction Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/transaction.ts): Transaction execution and signing
+- [Cross-Chain Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/crosschain.ts): IBC transfers and cross-chain routing
+- [Integration Index](https://github.com/Abraham12611/MitInject/blob/main/src/services/astroport/index.ts): Unified exports for the Astroport integration
 
-Key features of the Astroport integration include:
+The integration offers several key components:
 
 1. **Cross-Chain Liquidity Access**
-   - Access to deep liquidity pools across the Cosmos ecosystem
-   - Reduced slippage for large trades via concentrated liquidity
-   - Support for multiple token swaps in a single transaction
+   - Pool information retrieval across multiple Cosmos chains
+   - Swap simulation with price impact calculation
+   - Transaction execution with slippage protection
+   - IBC transfers between supported networks
+   - Optimal routing for cross-chain trades
 
-2. **Automated Trading Functions**
-   - Conditional swaps based on market triggers
-   - Automated liquidity provision and removal
-   - Fee optimization based on market conditions
+2. **Asset Management**
+   - Portfolio exposure tracking across multiple pools
+   - Impermanent loss calculation based on pool types
+   - APR estimation including fee and incentive rewards
+   - Liquidity position monitoring with real-time updates
+   - Risk assessment for different pool types
 
-3. **Asset Management**
-   - Portfolio exposure to Astroport's native ASTRO token
-   - Tracking of liquidity positions across multiple pools
-   - Risk assessment for impermanent loss
+3. **IFTTT Integration**
+   - Seamless integration with the existing IFTTT system
+   - Condition-based triggers for Astroport actions
+   - Custom transaction parameters for advanced strategies
 
-The demonstration showcases the ability to react to market conditions with automated trades:
+The integration supports various pool types:
+- **Constant Product Pools**: Traditional x*y=k pools similar to Uniswap V2
+- **Stableswap Pools**: Specialized for stable asset pairs with reduced slippage
+- **Passive Concentrated Liquidity**: Enhanced capital efficiency through concentrated liquidity
 
+#### Functional Workflow Demonstration
+
+```typescript
+// Complete workflow for cross-chain trading on Astroport
+import {
+  AstroportLiquidityService,
+  AstroportCrossChainService,
+  AstroportPortfolioService
+} from './services/astroport';
+import { IftttRule, ConditionFactory } from './services/helix';
+
+// Initialize core services
+const liquidityService = new AstroportLiquidityService('mainnet');
+const crossChainService = new AstroportCrossChainService('mainnet');
+const portfolioService = new AstroportPortfolioService('mainnet');
+const conditionFactory = new ConditionFactory('mainnet');
+
+// Initialize with user wallet
+await liquidityService.initTransactionService('your-secure-mnemonic');
+await crossChainService.initService('your-secure-mnemonic');
+
+// STEP 1: Create a condition to monitor Injective asset prices
+const injPriceDropCondition = conditionFactory.createPriceBelowCondition(
+  'inj_usdt_market_id',
+  '15.00' // Price threshold
+);
+
+// STEP 2: When condition triggers, execute a cross-chain swap sequence
+async function executeCrossChainStrategy() {
+  try {
+    // Transfer USDT from Injective to Osmosis via IBC
+    const ibcTransfer = await crossChainService.transferTokens({
+      senderAddress: 'inj1...',
+      recipientAddress: 'osmo1...',
+      sourceChain: 'injective',
+      destinationChain: 'osmosis',
+      amount: '100000000', // 100 USDT
+      denom: 'usdt'
+    });
+    console.log(`IBC transfer completed: ${ibcTransfer}`);
+
+    // Find optimal route for trading USDT to ATOM on Osmosis
+    const route = crossChainService.findOptimalRoute(
+      'osmosis',
+      'usdt',
+      'osmosis',
+      'atom'
+    );
+
+    // Execute the swap on Osmosis via Astroport
+    const poolAddress = 'osmo1...'; // USDT-ATOM pool
+    const swapResult = await liquidityService.executeSwap({
+      senderAddress: 'osmo1...',
+      poolAddress,
+      tokenIn: { native_token: { denom: 'ibc/usdt...' } }, // IBC denom
+      amountIn: '100000000', // 100 USDT
+      minAmountOut: '3500000', // Minimum ATOM to receive
+      maxSpread: '0.01' // 1% max slippage
+    });
+
+    console.log(`Swap executed: ${swapResult.transactionHash}`);
+    console.log(`Received: ${swapResult.returnAmount} ATOM`);
+
+    // Monitor position value and calculate impermanent loss
+    const positions = await portfolioService.getUserLiquidityPositions(
+      'inj1...',
+      [{lpTokenAddress: 'inj1...', poolAddress: 'inj1...', poolType: 'constant_product'}]
+    );
+
+    console.log(`Current portfolio value: ${positions[0].dollarValue} USD`);
+  } catch (error) {
+    console.error('Strategy execution failed:', error);
+  }
+}
+
+// STEP 3: Set up the automated rule
+const rule = new IftttRule(
+  injPriceDropCondition,
+  {
+    name: 'Cross-Chain Swap Strategy',
+    description: 'Buy ATOM when INJ price drops',
+    execute: executeCrossChainStrategy
+  }
+);
+
+// Register the rule for automated monitoring
+registerRule(rule);
 ```
-If significant holder movement takes place
-Then swap 0.1 USTC to USDC
-```
 
+The Astroport integration enables sophisticated cross-chain strategies that can be triggered by market conditions, time-based events, or wallet activities. This creates powerful opportunities for DeFi users to:
+
+1. Capture arbitrage opportunities across Cosmos chains
+2. Diversify portfolios with automated cross-chain rebalancing
+3. Execute complex strategies involving multiple DEXs and asset types
+4. Optimize yields by automatically moving liquidity to the highest APR pools
+
+The Astroport integration enables seamless cross-chain swaps, allowing users to trade assets across different Cosmos chains. The interface shows the optimal route, estimated fees, and expected return amount.
+
+![Markets](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-swap.png)
+
+
+The Pools tab provides an overview of all available liquidity pools across different chains. Users can see key metrics like Total Value Locked, APR, and 24-hour trading volume. The integration supports different pool types including Constant Product pools, Stableswap pools, and Concentrated Liquidity pools.
+
+![Markets](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/astroport-int-pools.png)
+
+This implementation provides the foundation for Pool Protocol's advanced cross-chain capabilities, allowing users to seamlessly access liquidity across the Cosmos ecosystem through a unified interface.
 
 ### Frontrunner
 Frontrunner is an innovative perpetual DEX on Injective that specializes in derivatives trading with advanced features for professional traders. Pool Protocol's integration with Frontrunner enables users to execute sophisticated trading strategies through our automated trading system.
