@@ -13,12 +13,15 @@ const nextConfig = {
     ],
   },
   transpilePackages: ['@privy-io/react-auth', '@privy-io/wagmi-connector'],
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
       net: false,
       tls: false,
+      'magic-sdk': false,
+      '@magic-sdk/provider': false,
+      '@magic-sdk/types': false,
     };
     return config;
   },

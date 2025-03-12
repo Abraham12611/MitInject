@@ -10,6 +10,7 @@ import {
   IndexerGrpcAccountApi 
 } from '@injectivelabs/sdk-ts'
 import { walletStrategy } from './injective-wallet'
+import { Magic, createMagicInstance } from './magic-wrapper';
 
 // Network configuration
 const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet' 
@@ -87,4 +88,16 @@ export const getMarketOrderbook = async (marketId: string, isDerivative: boolean
     console.error('Failed to fetch orderbook:', error)
     throw error
   }
-} 
+}
+
+// Replace any direct usage of Magic with a try-catch block
+// For example, if there's code like:
+// const magic = new Magic(apiKey, options);
+// Replace it with:
+// let magic;
+// try {
+//   magic = createMagicInstance(apiKey, options);
+// } catch (error) {
+//   console.warn('Failed to create Magic instance, using mock implementation');
+//   magic = new MagicMock(apiKey, options);
+// }

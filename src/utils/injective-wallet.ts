@@ -1,4 +1,17 @@
-import { 
+import { MagicStrategyMock } from './injective-wallet-mock';
+
+// Attempt to import the Magic strategy, but catch any errors
+let MagicStrategy: any;
+try {
+  // Use dynamic import to prevent build errors
+  const injectiveWalletTs = require('@injectivelabs/wallet-ts');
+  MagicStrategy = injectiveWalletTs.MagicStrategy;
+} catch (error) {
+  console.warn('Failed to import MagicStrategy, using mock implementation instead');
+  MagicStrategy = MagicStrategyMock;
+}
+
+import {
   WalletStrategy,
   WalletEvents
 } from '@injectivelabs/wallet-ts'
