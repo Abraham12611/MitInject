@@ -9,7 +9,7 @@
       "@trezor/connect-web": "9.0.5",
       "ws": "^8.18.0",
       "@magic-sdk/provider": "^29.0.1",
-      "@magic-sdk/types": "^28.21.1",
+      "@magic-sdk/types": "24.18.0",
       "magic-sdk": "^28.21.1",
       "@injectivelabs/wallet-ts": "^1.14.41",
       "@injectivelabs/sdk-ts": "^1.14.41",
@@ -21,7 +21,7 @@
   },
   "resolutions": {
     "@magic-sdk/provider": "^29.0.1",
-    "@magic-sdk/types": "^28.21.1",
+    "@magic-sdk/types": "24.18.0",
     "magic-sdk": "^28.21.1"
   },
   "scripts": {
@@ -44,7 +44,7 @@
     "@injectivelabs/utils": "^1.14.41",
     "@injectivelabs/wallet-ts": "^1.14.41",
     "@magic-sdk/provider": "^29.0.1",
-    "@magic-sdk/types": "^28.21.1",
+    "@magic-sdk/types": "24.18.0",
     "magic-sdk": "^28.21.1",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
