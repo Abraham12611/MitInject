@@ -4,37 +4,37 @@ import AssetDetailModal from './AssetDetailModal';
 
 const AssetHeatmap = ({ theme, onAssetSelect }) => {
   const [assets, setAssets] = useState([
-    { 
-      name: 'Sui',
-      symbol: 'SUI',
-      price: 1.45,
+    {
+      name: 'Injective',
+      symbol: 'INJ',
+      price: 32.45,
       change: 8.32,
       volume: '892M',
-      holdings: 42000,
-      value: 60900.00,
+      holdings: 1850,
+      value: 60032.50,
       marketCap: '2.8B',
       dominance: '0.2%',
       volatility: 'Very High',
       signal: 'Strong Buy',
       stakingAPY: '9.8%'
     },
-    { 
-      name: 'Deep Book',
-      symbol: 'DEEP',
-      price: 3.25,
+    {
+      name: 'Helix',
+      symbol: 'HLX',
+      price: 5.25,
       change: 12.45,
       volume: '245M',
-      holdings: 12500,
-      value: 40625.00,
+      holdings: 7500,
+      value: 39375.00,
       marketCap: '325M',
       dominance: '0.02%',
       volatility: 'High',
       signal: 'Buy',
       stakingAPY: '15.4%'
     },
-    { 
-      name: 'Walrus',
-      symbol: 'WAL',
+    {
+      name: 'Astroport',
+      symbol: 'ASTRO',
       price: 4.75,
       change: 15.67,
       volume: '178M',
@@ -47,8 +47,8 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       stakingAPY: '18.2%'
     },
     {
-      name: 'Sendverse',
-      symbol: 'SEND',
+      name: 'Ninja Garden',
+      symbol: 'NJA',
       price: 0.85,
       change: 25.45,
       volume: '89M',
@@ -60,7 +60,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Strong Buy',
       stakingAPY: '22.5%'
     },
-    { 
+    {
       name: 'Bitcoin',
       symbol: 'BTC',
       price: 43250.00,
@@ -74,7 +74,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Neutral',
       stakingAPY: null
     },
-    { 
+    {
       name: 'Solana',
       symbol: 'SOL',
       price: 98.45,
@@ -88,7 +88,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Buy',
       stakingAPY: '6.8%'
     },
-    { 
+    {
       name: 'Ethereum',
       symbol: 'ETH',
       price: 2245.67,
@@ -102,7 +102,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Oversold',
       stakingAPY: '4.2%'
     },
-    { 
+    {
       name: 'XRP',
       symbol: 'XRP',
       price: 0.52,
@@ -116,7 +116,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Oversold',
       stakingAPY: null
     },
-    { 
+    {
       name: 'Tether',
       symbol: 'USDT',
       price: 1.00,
@@ -130,7 +130,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
       signal: 'Hold',
       stakingAPY: '3.5%'
     },
-    { 
+    {
       name: 'USD Coin',
       symbol: 'USDC',
       price: 1.00,
@@ -290,9 +290,9 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
 
       <div className="grid grid-cols-12 gap-2" style={{ aspectRatio: '21/9' }}>
         {sortedAssets.map((asset) => {
-          const sizeClass = asset.value > totalValue * 0.2 
-            ? 'col-span-6 row-span-2' 
-            : asset.value > totalValue * 0.1 
+          const sizeClass = asset.value > totalValue * 0.2
+            ? 'col-span-6 row-span-2'
+            : asset.value > totalValue * 0.1
               ? 'col-span-4 row-span-2'
               : asset.value > totalValue * 0.05
                 ? 'col-span-3 row-span-1'
@@ -314,18 +314,18 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
                     <span className="font-bold text-lg" style={{ color: theme.colors.text?.primary }}>
                       {asset.symbol}
                     </span>
-                    <span 
+                    <span
                       className="text-sm font-medium"
-                      style={{ 
-                        color: asset.change >= 0 
-                          ? theme.colors.text?.success 
-                          : theme.colors.text?.error 
+                      style={{
+                        color: asset.change >= 0
+                          ? theme.colors.text?.success
+                          : theme.colors.text?.error
                       }}
                     >
                       {asset.change.toFixed(2)}%
                     </span>
                   </div>
-                  
+
                   {(asset.value > totalValue * 0.05) && (
                     <>
                       <div className="flex items-center justify-between text-sm">
@@ -342,7 +342,7 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
                           </span>
                         </div>
                       </div>
-                      
+
                       {asset.value > totalValue * 0.1 && (
                         <div className="mt-2 space-y-1">
                           <div className="flex justify-between text-xs">
@@ -373,4 +373,4 @@ const AssetHeatmap = ({ theme, onAssetSelect }) => {
   );
 };
 
-export default AssetHeatmap; 
+export default AssetHeatmap;

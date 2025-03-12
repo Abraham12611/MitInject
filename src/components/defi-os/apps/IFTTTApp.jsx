@@ -17,10 +17,10 @@ const SERVICES = [
   { id: 'event', icon: Bell, name: 'Event', color: '#96CEB4' },
   { id: 'twitter', icon: Twitter, name: 'Twitter', color: '#1DA1F2' },
   { id: 'rss', icon: Rss, name: 'RSS Feed', color: '#FFA500' },
-  { id: 'cetus', icon: Waves, name: 'Cetus', color: '#6C5CE7' },
-  { id: 'bluefin', icon: BarChart2, name: 'Bluefin', color: '#0984E3' },
-  { id: 'suilend', icon: PiggyBank, name: 'Suilend', color: '#1E90FF' },
-  { id: 'navi', icon: PiggyBank, name: 'Navi', color: '#00B894' },
+  { id: 'helix', icon: Waves, name: 'Helix', color: '#6C5CE7' },
+  { id: 'astroport', icon: BarChart2, name: 'Astroport', color: '#0984E3' },
+  { id: 'gryphon', icon: PiggyBank, name: 'Gryphon', color: '#1E90FF' },
+  { id: 'ninja', icon: PiggyBank, name: 'Ninja Garden', color: '#00B894' },
 ];
 
 const IFTTTApp = React.memo(({ isExpanded, theme }) => {
@@ -122,10 +122,10 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
       };
 
       console.log('Sending flow data:', flowData);
-      
+
       const { flow } = await createFlow(flowData);
       console.log('Flow created:', flow);
-      
+
       setFlows(prevFlows => [...prevFlows, flow]);
       setConfiguredTrigger(null);
       setConfiguredAction(null);
@@ -178,7 +178,7 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
 
   // Render methods
   const renderTriggerView = () => (
-    <TokenTriggers 
+    <TokenTriggers
       theme={theme}
       onBack={handleBack}
       isExpanded={isExpanded}
@@ -209,7 +209,7 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
   // Add back AI view
   const renderAIView = () => (
     <div className="flex flex-col p-8 space-y-6">
-      <div 
+      <div
         className="p-6 rounded-xl"
         style={{ backgroundColor: theme.colors.secondary }}
       >
@@ -221,7 +221,7 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
         <div className="flex justify-end mt-4">
           <button
             className="px-4 py-2 rounded-lg flex items-center gap-2"
-            style={{ 
+            style={{
               backgroundColor: theme.colors.accent,
               color: getAccentTextColor()
             }}
@@ -252,7 +252,7 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
         />
       ) : (
         <>
-          <TabMenu 
+          <TabMenu
             activeTab={activeTab}
             onTabChange={setActiveTab}
             theme={theme}
@@ -318,4 +318,4 @@ const IFTTTApp = React.memo(({ isExpanded, theme }) => {
 
 IFTTTApp.displayName = 'IFTTTApp';
 
-export default IFTTTApp; 
+export default IFTTTApp;

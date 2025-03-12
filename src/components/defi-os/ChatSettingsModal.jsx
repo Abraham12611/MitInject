@@ -23,7 +23,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
   // Add spring animations for the stat bars
   const humorSpring = useSpring({
     width: isOpen ? '85%' : '0%',
-    config: { 
+    config: {
       tension: 60,     // Lower tension for slower movement
       friction: 20,    // Lower friction for smoother motion
       mass: 2,         // More mass for more inertia
@@ -31,10 +31,10 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
       delay: 600      // Delay start by 600ms
     }
   });
-  
+
   const sassinessSpring = useSpring({
     width: isOpen ? '95%' : '0%',
-    config: { 
+    config: {
       tension: 60,
       friction: 20,
       mass: 2,
@@ -42,10 +42,10 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
       delay: 1200     // Start after humor bar
     }
   });
-  
+
   const honestySpring = useSpring({
     width: isOpen ? '75%' : '0%',
-    config: { 
+    config: {
       tension: 60,
       friction: 20,
       mass: 2,
@@ -69,16 +69,16 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
 
   return (
     <div className="fixed inset-0 z-[300]">
-      <animated.div 
+      <animated.div
         style={overlaySpring}
         className="absolute inset-0 backdrop-blur-sm"
         onClick={onClose}
       >
         <div className="absolute inset-0 fractal-background" />
       </animated.div>
-      
+
       <div className="flex items-center justify-center min-h-screen p-4">
-        <animated.div 
+        <animated.div
           style={{
             ...modalSpring,
             background: theme.colors.background,
@@ -89,7 +89,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
           onClick={e => e.stopPropagation()}
         >
           {/* Close button */}
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors"
           >
@@ -109,11 +109,11 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                   playsInline
                   className="w-full h-full object-cover"
                 >
-                  <source src="/assets/characters/agent.mp4" type="video/mp4" />
+                  <source src="/assets/characters/20250318_001748.jpg" type="video/mp4" />
                   {/* Fallback to static image if video fails */}
-                  <img 
-                    src="/assets/characters/sample_for_agent.png"
-                    alt="Mitsui"
+                  <img
+                    src="/assets/characters/20250318_001748.jpg"
+                    alt="NordStar"
                     className="w-full h-full object-cover"
                   />
                 </video>
@@ -121,9 +121,9 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <button 
+                <button
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-                  style={{ 
+                  style={{
                     background: `${theme.colors.background}CC`,
                     border: `1px solid ${theme.colors.border}`,
                     boxShadow: theme.colors.effects?.glow
@@ -131,9 +131,9 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                 >
                   <Gift className="w-5 h-5" style={{ color: theme.colors.accent }} />
                 </button>
-                <button 
+                <button
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-                  style={{ 
+                  style={{
                     background: `${theme.colors.background}CC`,
                     border: `1px solid ${theme.colors.border}`,
                     boxShadow: theme.colors.effects?.glow
@@ -141,9 +141,9 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                 >
                   <Heart className="w-5 h-5" style={{ color: theme.colors.accent }} />
                 </button>
-                <button 
+                <button
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-                  style={{ 
+                  style={{
                     background: `${theme.colors.background}CC`,
                     border: `1px solid ${theme.colors.border}`,
                     boxShadow: theme.colors.effects?.glow
@@ -162,7 +162,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                   Name
                 </div>
                 <div className="text-3xl font-['Pacifico']" style={{ color: theme.colors?.text?.accent || theme.colors.accent }}>
-                  Mitsui
+                  NordStar
                 </div>
               </div>
 
@@ -172,7 +172,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                   Bio
                 </div>
                 <div className="text-lg" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-                  Girl who found Sui
+                  Helping you navigate the Injective ecosystem
                 </div>
               </div>
 
@@ -188,7 +188,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                       85%
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="h-2 rounded-full w-full"
                     style={{ background: `${theme.colors.secondary}80` }}
                   >
@@ -212,7 +212,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                       95%
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="h-2 rounded-full w-full"
                     style={{ background: `${theme.colors.secondary}80` }}
                   >
@@ -236,7 +236,7 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
                       75%
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="h-2 rounded-full w-full"
                     style={{ background: `${theme.colors.secondary}80` }}
                   >
@@ -258,4 +258,4 @@ const ChatSettingsModal = ({ isOpen, onClose, theme }) => {
   );
 };
 
-export default ChatSettingsModal; 
+export default ChatSettingsModal;

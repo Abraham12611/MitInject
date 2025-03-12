@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Gauge, Volume2, Activity, BarChart2 } from 'l
 
 export const SentimentDetailView = ({ data, theme }) => {
   const { value, trend } = data;
-  
+
   // Simulated historical data
   const historicalData = Array.from({ length: 24 }, (_, i) => ({
     time: new Date(Date.now() - (23 - i) * 3600000).toLocaleTimeString(),
@@ -17,9 +17,9 @@ export const SentimentDetailView = ({ data, theme }) => {
   };
 
   const MetricCard = ({ icon: Icon, title, value, trend }) => (
-    <div 
+    <div
       className="p-4 rounded-lg"
-      style={{ 
+      style={{
         background: theme.colors.secondary,
         border: `1px solid ${theme.colors.border}`
       }}
@@ -33,10 +33,10 @@ export const SentimentDetailView = ({ data, theme }) => {
           {value}
         </span>
         {trend && (
-          <span 
+          <span
             className="text-sm mb-1"
-            style={{ 
-              color: trend === 'up' 
+            style={{
+              color: trend === 'up'
                 ? theme.colors.text?.success || '#4CAF50'
                 : theme.colors.text?.error || '#f44336'
             }}
@@ -53,9 +53,9 @@ export const SentimentDetailView = ({ data, theme }) => {
       {/* Gauge Section */}
       <div className="flex justify-center">
         <div className="relative w-48 h-24">
-          <div 
+          <div
             className="absolute inset-0 rounded-t-full"
-            style={{ 
+            style={{
               background: `conic-gradient(
                 ${theme.colors.text?.error || '#f44336'} 0deg,
                 ${theme.colors.text?.warning || '#FB8C00'} 60deg,
@@ -65,15 +65,15 @@ export const SentimentDetailView = ({ data, theme }) => {
               clipPath: 'polygon(0 50%, 100% 50%, 100% 0, 0 0)'
             }}
           />
-          <div 
+          <div
             className="absolute left-1/2 bottom-0 w-1 h-[60%] origin-bottom"
-            style={{ 
+            style={{
               background: theme.colors.text?.primary,
               transform: `translateX(-50%) rotate(${getGaugeRotation(value)}deg)`,
               transition: 'transform 0.5s ease-out'
             }}
           />
-          <div 
+          <div
             className="absolute bottom-0 left-1/2 -translate-x-1/2 text-2xl font-bold"
             style={{ color: theme.colors.text?.primary }}
           >
@@ -92,22 +92,22 @@ export const SentimentDetailView = ({ data, theme }) => {
         />
         <MetricCard
           icon={Activity}
-          title="Volatility"
+          title="Perp Activity"
           value="32.5"
           trend="down"
         />
         <MetricCard
           icon={BarChart2}
-          title="Social Score"
+          title="INJ Sentiment"
           value="8.4"
           trend="up"
         />
       </div>
 
       {/* Historical Chart */}
-      <div 
+      <div
         className="p-4 rounded-lg"
-        style={{ 
+        style={{
           background: theme.colors.secondary,
           border: `1px solid ${theme.colors.border}`
         }}
@@ -117,18 +117,18 @@ export const SentimentDetailView = ({ data, theme }) => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={historicalData}>
               <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
-              <XAxis 
-                dataKey="time" 
+              <XAxis
+                dataKey="time"
                 stroke={theme.colors.text?.secondary}
                 tick={{ fill: theme.colors.text?.secondary }}
               />
-              <YAxis 
+              <YAxis
                 domain={[0, 100]}
                 stroke={theme.colors.text?.secondary}
                 tick={{ fill: theme.colors.text?.secondary }}
               />
-              <Tooltip 
-                contentStyle={{ 
+              <Tooltip
+                contentStyle={{
                   background: theme.colors.background,
                   border: `1px solid ${theme.colors.border}`
                 }}
@@ -145,4 +145,4 @@ export const SentimentDetailView = ({ data, theme }) => {
       </div>
     </div>
   );
-}; 
+};

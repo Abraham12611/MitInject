@@ -30,9 +30,9 @@ const tokenTriggers = [
     isPro: true
   },
   {
-    id: 'whale-movement',
-    title: 'Whale activity',
-    description: 'This Trigger fires when significant holder movement is detected.',
+    id: 'perp-funding',
+    title: 'Funding rate change',
+    description: 'This Trigger fires when a perpetual market\'s funding rate exceeds your specified threshold.',
     isPro: true
   },
   {
@@ -44,7 +44,7 @@ const tokenTriggers = [
   {
     id: 'verification',
     title: 'Token verification',
-    description: 'This Trigger fires when the token gets verified on Sui Explorer.',
+    description: 'This Trigger fires when the token gets verified on Injective Explorer.',
     isPro: false
   }
 ];
@@ -57,7 +57,7 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
     if (!trigger?.isPro) return null;
 
     return (
-      <div 
+      <div
         className="w-full p-4 text-center text-white"
         style={{ backgroundColor: '#0096FF' }}
       >
@@ -88,7 +88,7 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
       return '#000000';
     }
     // For specific themes where we want light text
-    if (theme.name?.toLowerCase().includes('synthwave') || 
+    if (theme.name?.toLowerCase().includes('synthwave') ||
         theme.name?.toLowerCase().includes('purple')) {
       return '#FFFFFF';
     }
@@ -116,20 +116,20 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
           style={baseStyles}
         >
           <div className="h-full flex flex-col">
-            <h3 
+            <h3
               className="text-xl font-semibold mb-2"
               style={{ color: theme.colors.text.primary }}
             >
               {trigger.title}
             </h3>
-            <p 
+            <p
               className="text-sm flex-grow"
               style={{ color: theme.colors.text.secondary }}
             >
               {trigger.description}
             </p>
             {trigger.isPro && (
-              <span 
+              <span
                 className="absolute bottom-6 right-6 px-2 py-1 rounded text-xs font-medium"
                 style={proBadgeStyles}  // Apply our new styles
               >
@@ -150,13 +150,13 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
       >
         <div className="flex justify-between items-start gap-4">
           <div>
-            <h3 
+            <h3
               className="font-semibold mb-1"
               style={{ color: theme.colors.text.primary }}
             >
               {trigger.title}
             </h3>
-            <p 
+            <p
               className="text-sm"
               style={{ color: theme.colors.text.secondary }}
             >
@@ -164,7 +164,7 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
             </p>
           </div>
           {trigger.isPro && (
-            <span 
+            <span
               className="px-2 py-1 rounded text-xs font-medium flex-shrink-0"
               style={proBadgeStyles}  // Apply our new styles
             >
@@ -179,8 +179,8 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div 
-        className="flex items-center gap-4 p-4 border-b" 
+      <div
+        className="flex items-center gap-4 p-4 border-b"
         style={{ borderColor: theme.colors.border }}
       >
         <button
@@ -190,13 +190,13 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
           <ArrowLeft className="w-5 h-5" style={{ color: theme.colors.text.primary }} />
         </button>
         <div>
-          <h2 
+          <h2
             className="text-2xl font-bold"
             style={{ color: theme.colors.text.primary }}
           >
             Choose a trigger
           </h2>
-          <p 
+          <p
             className="text-sm"
             style={{ color: theme.colors.text.secondary }}
           >
@@ -207,13 +207,13 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
 
       {/* Responsive Triggers Layout */}
       <div className="flex-1 overflow-auto p-4">
-        <div className={isExpanded 
+        <div className={isExpanded
           ? "grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto"
           : "flex flex-col space-y-3 max-w-2xl mx-auto"
         }>
           {tokenTriggers.map(trigger => (
-            <TriggerCard 
-              key={trigger.id} 
+            <TriggerCard
+              key={trigger.id}
               trigger={trigger}
               isExpanded={isExpanded}
             />
@@ -224,4 +224,4 @@ const TokenTriggers = ({ theme, onBack, isExpanded, onSaveTrigger }) => {
   );
 };
 
-export default TokenTriggers; 
+export default TokenTriggers;

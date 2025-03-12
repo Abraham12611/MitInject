@@ -142,6 +142,9 @@ const PortfolioApp = ({ isExpanded, theme }) => {
       'INJ': '#7C3AED', // Injective purple
       'USDT': '#26A17B', // USDT green
       'WETH': '#627EEA', // Ethereum blue
+      'ASTRO': '#C05AFF', // Astroport token
+      'GRY': '#2D3250', // Gryphon token
+      'NJA': '#FF6B6B', // Ninja Garden token
     };
     return colors[symbol] || `#${Math.floor(Math.random()*16777215).toString(16)}`;
   };

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getSuiMetrics } from '../../../utils/network';
+import { getInjectiveMetrics } from '../../../utils/network';
 
 const StatusContext = createContext();
 
@@ -9,9 +9,9 @@ export const StatusProvider = ({ children }) => {
       status: 'online',
       metrics: { responseTime: 150, activeSessions: 24, model: 'DeepSeek-R1' }
     },
-    sui: {
+    injective: {
       status: 'online',
-      metrics: { tps: 4521, gasPrice: '0.000000231', checkpoint: '12445213' }
+      metrics: { tps: 4521, gasPrice: '0.000000231', blockHeight: '18445213' }
     }
     /* Comment out Solana for future implementation
     solana: {
@@ -64,7 +64,7 @@ export const StatusProvider = ({ children }) => {
   // Function to handle websocket messages
   const handleWebSocketMessage = (message) => {
     const { type, network, data } = message;
-    
+
     switch (type) {
       case 'network_status':
         updateNetworkStatus(network, data);
@@ -86,7 +86,7 @@ export const StatusProvider = ({ children }) => {
   // Example usage with WebSocket (to be implemented)
   // useEffect(() => {
   //   const ws = new WebSocket('wss://your-websocket-endpoint');
-  //   
+  //
   //   ws.onmessage = (event) => {
   //     const message = JSON.parse(event.data);
   //     handleWebSocketMessage(message);
@@ -97,26 +97,26 @@ export const StatusProvider = ({ children }) => {
 
   // For development/testing - simulate updates
   useEffect(() => {
-    const updateSuiMetrics = async () => {
-      const metrics = await getSuiMetrics();
-      console.log('Updating Sui metrics:', metrics); // Debug log
+    const updateInjectiveMetrics = async () => {
+      const metrics = await getInjectiveMetrics();
+      console.log('Updating Injective metrics:', metrics); // Debug log
       if (metrics) {
         // Preserve TPS when updating other metrics
-        updateNetworkMetrics('sui', {
+        updateNetworkMetrics('injective', {
           ...metrics,
-          tps: networkStatus.sui.metrics.tps // Keep existing TPS
+          tps: networkStatus.injective.metrics.tps // Keep existing TPS
         });
       }
     };
 
-    updateSuiMetrics();
-    const interval = setInterval(updateSuiMetrics, 30000);
+    updateInjectiveMetrics();
+    const interval = setInterval(updateInjectiveMetrics, 30000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <StatusContext.Provider value={{ 
-      networkStatus, 
+    <StatusContext.Provider value={{
+      networkStatus,
       marketSentiment,
       updateNetworkStatus,
       updateNetworkMetrics,
@@ -133,15 +133,15 @@ export const useStatus = () => useContext(StatusContext);
 
 // Example usage:
 // const { updateNetworkMetrics, updateConnectionStatus } = useStatus();
-// 
+//
 // // Update Sui TPS
 // updateNetworkMetrics('sui', { tps: 5000 });
-// 
+//
 // // Mark Solana as having issues
 // updateConnectionStatus('solana', 'warning');
-// 
+//
 // // Update multiple metrics for Mitsui
-// updateNetworkMetrics('mitsui', { 
+// updateNetworkMetrics('mitsui', {
 //   responseTime: 120,
 //   activeSessions: 30
-// }); 
+// });

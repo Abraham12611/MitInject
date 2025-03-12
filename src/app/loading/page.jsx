@@ -157,9 +157,9 @@ const LoadingPageContent = () => {
           <animated.h1
             style={titleSpring}
             className="text-6xl font-bold text-white mb-6 glitch title-text backdrop-blur-sm"
-            data-text="Mitsui Protocol"
+            data-text="Pool Protocol"
           >
-            Mitsui Protocol
+            Pool Protocol
           </animated.h1>
 
           <animated.h2
@@ -182,8 +182,7 @@ const LoadingPageContent = () => {
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col items-center text-black/50 text-sm space-y-1 backdrop-blur-sm">
-          <span>Version 0.1.0-alpha</span>
-          <span>© 2025 Mitsui Protocol. All rights reserved.</span>
+          <span>© 2025 Pool Protocol. All rights reserved.</span>
         </div>
       </animated.div>
 

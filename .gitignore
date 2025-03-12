@@ -64,6 +64,8 @@ web_modules/
 .rts2_cache_es/
 .rts2_cache_umd/
 extra/
+
+
 # Optional REPL history
 .node_repl_history
 
@@ -139,3 +141,4 @@ extra/helix-integration.md
 extra/
 .cursor/rules/helix-integration.mdc
 .cursor/rules/
+extra/links.md

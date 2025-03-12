@@ -1,7 +1,7 @@
 import React from 'react';
-import { 
-  X, TrendingUp, TrendingDown, DollarSign, BarChart2, 
-  Wallet, Lock, Building2, ArrowUpRight, Clock, Activity 
+import {
+  X, TrendingUp, TrendingDown, DollarSign, BarChart2,
+  Wallet, Lock, Building2, ArrowUpRight, Clock, Activity
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -20,14 +20,14 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
       type: 'Wallet',
       amount: asset.holdings * 0.4,
       value: asset.value * 0.4,
-      location: 'Sui Wallet',
+      location: 'Injective Wallet',
       icon: Wallet
     },
     {
       type: 'Staked',
       amount: asset.holdings * 0.3,
       value: asset.value * 0.3,
-      location: 'Validator: Chorus One',
+      location: 'Validator: Figment',
       apy: asset.stakingAPY,
       icon: Lock
     },
@@ -35,7 +35,7 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
       type: 'Lending',
       amount: asset.holdings * 0.2,
       value: asset.value * 0.2,
-      location: 'Scallop Protocol',
+      location: 'Helix Protocol',
       apy: '8.2%',
       icon: Building2
     },
@@ -43,7 +43,7 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
       type: 'LP',
       amount: asset.holdings * 0.1,
       value: asset.value * 0.1,
-      location: 'DeepBook SUI/USDC',
+      location: 'Astroport INJ/USDT',
       apy: '12.4%',
       icon: ArrowUpRight
     }
@@ -51,11 +51,11 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
 
   return (
     <div className="fixed inset-0 z-[200]">
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div 
+      <div
         className="absolute inset-8 rounded-xl overflow-hidden"
         style={{
           background: theme.colors.background,
@@ -69,9 +69,9 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
             <h2 className="text-2xl font-bold" style={{ color: theme.colors.text?.primary }}>
               {asset.name} ({asset.symbol})
             </h2>
-            <div 
+            <div
               className="px-3 py-1 rounded-lg text-sm"
-              style={{ 
+              style={{
                 background: asset.change >= 0 ? 'rgba(52, 211, 153, 0.2)' : 'rgba(239, 68, 68, 0.2)',
                 color: asset.change >= 0 ? theme.colors.text?.success : theme.colors.text?.error
               }}
@@ -99,18 +99,18 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historicalData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
-                  <XAxis 
-                    dataKey="time" 
+                  <XAxis
+                    dataKey="time"
                     stroke={theme.colors.text?.secondary}
                     tick={{ fill: theme.colors.text?.secondary }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={theme.colors.text?.secondary}
                     tick={{ fill: theme.colors.text?.secondary }}
                     domain={['dataMin', 'dataMax']}
                   />
-                  <Tooltip 
-                    contentStyle={{ 
+                  <Tooltip
+                    contentStyle={{
                       background: theme.colors.background,
                       border: `1px solid ${theme.colors.border}`
                     }}
@@ -161,7 +161,7 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
                 {holdings.map((holding, index) => {
                   const Icon = holding.icon;
                   return (
-                    <div 
+                    <div
                       key={index}
                       className="p-3 rounded-lg"
                       style={{ background: `${theme.colors.background}80` }}
@@ -208,4 +208,4 @@ const AssetDetailModal = ({ asset, isOpen, onClose, theme }) => {
   );
 };
 
-export default AssetDetailModal; 
+export default AssetDetailModal;

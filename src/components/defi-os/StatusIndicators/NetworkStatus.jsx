@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Brain, Network, Waves } from 'lucide-react';
 import { Tooltip } from '@/components/ui/tooltip';
-import { getSuiTPS } from '@/utils/network';
+import { getInjectiveTPS } from '@/utils/network';
 
 const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
   const [isBlinking, setIsBlinking] = useState(false);
@@ -21,23 +21,23 @@ const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
     return () => clearInterval(blinkInterval);
   }, [network]); // Add network dependency
 
-  // Fetch TPS only for Sui network
+  // Fetch TPS only for Injective network
   useEffect(() => {
-    // Skip effect entirely for non-Sui networks
-    if (network !== 'sui') return;
+    // Skip effect entirely for non-Injective networks
+    if (network !== 'injective') return;
 
     let mounted = true;  // For cleanup
 
     const fetchTPS = async () => {
-      const tps = await getSuiTPS();
-      console.log('NETWORK STATUS: Sui TPS:', tps);
+      const tps = await getInjectiveTPS();
+      console.log('NETWORK STATUS: Injective TPS:', tps);
       // Only update state if component is still mounted
       if (mounted && tps !== null) setCurrentTPS(tps);
     };
 
     fetchTPS();
     const interval = setInterval(fetchTPS, 30000);
-    
+
     return () => {
       mounted = false;
       clearInterval(interval);
@@ -70,7 +70,7 @@ const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
     switch (network) {
       case 'mitsui':
         return <Brain className="w-4 h-4" />;
-      case 'sui':
+      case 'injective':
         return <Network className="w-4 h-4" />;
       /* Comment out Solana for now
       case 'solana':
@@ -94,14 +94,14 @@ const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
             </div>
           </div>
         );
-      case 'sui':
+      case 'injective':
         return (
           <div className="p-2">
-            <h4 className="font-medium mb-1">Sui Network</h4>
+            <h4 className="font-medium mb-1">Injective Network</h4>
             <div className="text-sm opacity-90">
               <p>TPS: {currentTPS ?? 'Loading...'}</p>
-              <p>Gas Price: {metrics.gasPrice} SUI</p>
-              <p>Checkpoint: {metrics.checkpoint}</p>
+              <p>Gas Price: {metrics.gasPrice} INJ</p>
+              <p>Block Height: {metrics.blockHeight}</p>
             </div>
           </div>
         );
@@ -125,10 +125,10 @@ const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
 
   return (
     <Tooltip content={getTooltipContent()}>
-      <div 
+      <div
         className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-opacity-10 cursor-pointer hover:bg-opacity-20 transition-all"
         style={containerStyle}
-        onClick={() => onClick({ 
+        onClick={() => onClick({
           ...metrics,  // Keep original mock metrics
           tps: currentTPS // Add real TPS data
         })}
@@ -141,4 +141,4 @@ const NetworkStatus = ({ network, status, metrics, theme, onClick }) => {
   );
 };
 
-export default NetworkStatus; 
+export default NetworkStatus;

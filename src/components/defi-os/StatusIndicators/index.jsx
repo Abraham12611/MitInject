@@ -17,7 +17,7 @@ const StatusIndicators = ({ theme }) => {
     setModalConfig({
       isOpen: true,
       type: 'network',
-      data: { 
+      data: {
         network,
         metrics: {
           ...networkStatus[network].metrics,
@@ -38,22 +38,22 @@ const StatusIndicators = ({ theme }) => {
   return (
     <>
       <div className="flex items-center gap-4 px-4 overflow-x-auto status-scroll">
-        <NetworkStatus 
+        <NetworkStatus
           network="mitsui"
           status="online"
           metrics={networkStatus.mitsui.metrics}
           theme={theme}
           onClick={(metrics) => handleNetworkClick('mitsui', metrics)}
         />
-        <NetworkStatus 
-          network="sui"
+        <NetworkStatus
+          network="injective"
           status="online"
-          metrics={networkStatus.sui.metrics}
+          metrics={networkStatus.injective.metrics}
           theme={theme}
-          onClick={(metrics) => handleNetworkClick('sui', metrics)}
+          onClick={(metrics) => handleNetworkClick('injective', metrics)}
         />
         {/* Commented out Solana for future implementation
-        <NetworkStatus 
+        <NetworkStatus
           network="solana"
           status="online"
           metrics={networkStatus.solana.metrics}
@@ -61,13 +61,13 @@ const StatusIndicators = ({ theme }) => {
           onClick={() => handleNetworkClick('solana')}
         />
         */}
-        <MarketSentiment 
+        <MarketSentiment
           theme={theme}
           onClick={handleSentimentClick}
         />
       </div>
 
-      <StatusModal 
+      <StatusModal
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig({ isOpen: false, type: null, data: null })}
         type={modalConfig.type}
@@ -78,4 +78,4 @@ const StatusIndicators = ({ theme }) => {
   );
 };
 
-export default StatusIndicators; 
+export default StatusIndicators;

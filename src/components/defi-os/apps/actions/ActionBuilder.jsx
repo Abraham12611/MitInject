@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Waves, Wallet, Twitter, BarChart2, PiggyBank, Send, Repeat, Plus, Minus, MessageSquare, Share2, Globe, Zap, ArrowsLeftRight } from 'lucide-react';
+import { ArrowLeft, Search, Waves, Wallet, Twitter, BarChart2, PiggyBank, Send, Repeat, Plus, Minus, MessageSquare, Share2, Globe, Zap, ArrowRight } from 'lucide-react';
 import { useSpring, animated, useTransition } from '@react-spring/web';
 import ActionList from './ActionList';
 
@@ -100,7 +100,7 @@ const actionServices = [
         title: 'Cross-chain swap',
         description: 'Swap tokens across different chains',
         isPro: true,
-        icon: ArrowsLeftRight
+        icon: ArrowRight
       }
     ]
   },

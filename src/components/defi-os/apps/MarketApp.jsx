@@ -8,16 +8,17 @@ const MarketApp = ({ isExpanded, theme }) => {
         {!isExpanded ? (
           <div className="p-4 rounded-lg" style={{ background: theme.colors.secondary }}>
             <h3 className="text-lg font-medium" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-              Sui Typhoon AI Hackathon is here! 🚀
+              @injective recently introduced iAssets, a new framework for bringing stocks, bonds, and ETFs onchain as programmable financial instruments instead of static tokens.
             </h3>
             <p className="text-sm mt-2" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>
-              Checkout the list of submitted projects:
+              The problem with today's tokenized assets?
+              They lack composability and capital efficiency because they rely on off-chain .... readmore
             </p>
             <div className="mt-4 space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: theme.colors?.text?.accent || theme.colors.accent }} />
                 <p className="text-sm" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-                  SuiGPT - AI-powered DeFi assistant
+                  NordStar - AI-powered DeFi assistant
                 </p>
               </div>
             </div>
@@ -28,13 +29,14 @@ const MarketApp = ({ isExpanded, theme }) => {
               {/* Hackathon News */}
               <div className="p-4 rounded-lg" style={{ background: theme.colors.secondary }}>
                 <h3 className="text-lg font-medium" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-                  Sui Typhoon AI Hackathon is here! 🚀
+                @injective recently introduced iAssets, a new framework for bringing stocks, bonds, and ETFs onchain as programmable financial instruments instead of static tokens.
                 </h3>
                 <p className="text-sm mt-2" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>
-                  Checkout the list of submitted projects:
+                The problem with today's tokenized assets?
+                They lack composability and capital efficiency because they rely on off-chain collateral and synthetic minting.
                 </p>
                 <div className="mt-4 space-y-2">
-                  {['SuiGPT - AI-powered DeFi assistant', 'TradingBrain - ML trading signals', 'AIStaking - Smart staking optimizer'].map((project, index) => (
+                  {['NordStar - AI-powered DeFi assistant', 'TradingBrain - ML trading signals', 'AIStaking - Smart staking optimizer'].map((project, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full" style={{ background: theme.colors?.text?.accent || theme.colors.accent }} />
                       <p className="text-sm" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
@@ -45,21 +47,21 @@ const MarketApp = ({ isExpanded, theme }) => {
                 </div>
               </div>
 
-              {/* Walrus News */}
+              {/* Helix News */}
               <div className="p-4 rounded-lg" style={{ background: theme.colors.secondary }}>
                 <div className="flex items-center gap-2">
                   <span className="text-lg">🔥</span>
                   <h3 className="text-lg font-medium" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-                    Walrus Mainnet Launch Imminent!
+                    Helix V2 Launch Imminent!
                   </h3>
                 </div>
                 <p className="text-sm mt-2" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>
-                  Will there be an announcement during the event at ETH Denver? The community is buzzing with speculation as Sui Presents Walrus is scheduled for February 26.
+                  Helix, Injective's flagship DEX, is preparing to launch V2 with improved capital efficiency, concentrated liquidity, and advanced order types. The community is eagerly anticipating the update slated for next month.
                 </p>
                 <div className="mt-3 flex items-center gap-2">
-                  <div 
+                  <div
                     className="px-2 py-1 rounded text-xs font-medium"
-                    style={{ 
+                    style={{
                       background: `${theme.colors.accent}20`,
                       color: theme.colors?.text?.accent || theme.colors.accent
                     }}
@@ -75,7 +77,7 @@ const MarketApp = ({ isExpanded, theme }) => {
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-lg">📅</span>
                   <h3 className="text-lg font-medium" style={{ color: theme.colors?.text?.primary || theme.colors.text }}>
-                    Fresh in Sui this week
+                    Fresh in Injective this week
                   </h3>
                 </div>
 
@@ -86,9 +88,9 @@ const MarketApp = ({ isExpanded, theme }) => {
                       Project Updates
                     </h4>
                     <div className="space-y-2">
-                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Scallop: Launched liquid staking v2</p>
-                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Turbos: Added perpetual trading</p>
-                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Cetus: Integrated with 5 new protocols</p>
+                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Gryphon: Reached 250M INJ staked milestone</p>
+                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Astroport: Added cross-chain swaps with 5 new chains</p>
+                      <p className="text-sm" style={{ color: theme.colors?.text?.secondary || theme.colors.text }}>• Helix: Launched 10 new perpetual markets</p>
                     </div>
                   </div>
                 </div>
@@ -101,4 +103,4 @@ const MarketApp = ({ isExpanded, theme }) => {
   );
 };
 
-export default MarketApp; 
+export default MarketApp;

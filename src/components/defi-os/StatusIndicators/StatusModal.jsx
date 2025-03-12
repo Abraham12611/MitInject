@@ -8,11 +8,11 @@ const StatusModal = ({ isOpen, onClose, type, data, theme }) => {
 
   return (
     <>
-      <div 
+      <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[160]"
         onClick={onClose}
       />
-      <div 
+      <div
         className="fixed top-1/8 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl z-[161]"
         style={{
           background: theme.colors.background,
@@ -23,7 +23,7 @@ const StatusModal = ({ isOpen, onClose, type, data, theme }) => {
       >
         <div className="flex justify-between items-center p-4 border-b" style={{ borderColor: theme.colors.border }}>
           <h2 className="text-lg font-medium" style={{ color: theme.colors.text?.primary }}>
-            {type === 'network' ? `${data.network} Status` : 'Market Sentiment Analysis'}
+            {type === 'network' ? `${data.network.charAt(0).toUpperCase() + data.network.slice(1)} Status` : 'Market Sentiment Analysis'}
           </h2>
           <button
             onClick={onClose}
@@ -44,4 +44,4 @@ const StatusModal = ({ isOpen, onClose, type, data, theme }) => {
   );
 };
 
-export default StatusModal; 
+export default StatusModal;

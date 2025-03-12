@@ -1,4 +1,4 @@
-import { Wallet, Droplets, Gift, BarChart3, BarChart2, Radio, Zap } from 'lucide-react';
+import { Wallet, Droplets, Gift, BarChart3, BarChart2, Radio, Zap, TrendingUp, Globe } from 'lucide-react';
 import PortfolioApp from './PortfolioApp';
 import LiquidityApp from './LiquidityApp';
 import AirdropApp from './AirdropApp';
@@ -6,6 +6,8 @@ import MarketApp from './MarketApp';
 import LiveMarketFeed from './LiveMarketFeed';
 import AssetHeatmap from '../AssetPerformance/AssetHeatmap';
 import IFTTTApp from './IFTTTApp';
+import HelixApp from './HelixApp';
+import AstroportApp from './AstroportApp';
 
 // Export the components individually
 export {
@@ -15,7 +17,9 @@ export {
   MarketApp,
   LiveMarketFeed,
   AssetHeatmap,
-  IFTTTApp
+  IFTTTApp,
+  HelixApp,
+  AstroportApp
 };
 
 // Export the apps configuration array
@@ -83,6 +87,28 @@ export const apps = [
     title: 'IFTTT',
     content: ({ isExpanded, theme }) => (
       <IFTTTApp
+        isExpanded={isExpanded}
+        theme={theme}
+      />
+    )
+  },
+  {
+    id: 'helix',
+    icon: TrendingUp,
+    title: 'Helix DEX',
+    content: ({ isExpanded, theme }) => (
+      <HelixApp
+        isExpanded={isExpanded}
+        theme={theme}
+      />
+    )
+  },
+  {
+    id: 'astroport',
+    icon: Globe,
+    title: 'Astroport',
+    content: ({ isExpanded, theme }) => (
+      <AstroportApp
         isExpanded={isExpanded}
         theme={theme}
       />
