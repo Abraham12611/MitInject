@@ -24,11 +24,11 @@ const nextConfig = {
   },
   experimental: {
     turbo: {
-      loaders: {
-        '.js': ['babel-loader'],
-        '.jsx': ['babel-loader'],
-        '.ts': ['ts-loader'],
-        '.tsx': ['ts-loader']
+      rules: {
+        '*.js': ['babel-loader'],
+        '*.jsx': ['babel-loader'],
+        '*.ts': ['ts-loader'],
+        '*.tsx': ['ts-loader']
       }
     }
   }
