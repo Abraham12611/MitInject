@@ -11,11 +11,11 @@
       "@magic-sdk/provider": "^24.0.0",
       "@magic-sdk/types": "^24.0.0",
       "magic-sdk": "^24.0.0",
-      "@injectivelabs/wallet-ts": "1.0.422",
-      "@injectivelabs/sdk-ts": "1.0.422",
-      "@injectivelabs/networks": "1.0.422",
-      "@injectivelabs/utils": "1.0.422",
-      "@injectivelabs/ts-types": "1.0.422",
+      "@injectivelabs/wallet-ts": "^1.14.41",
+      "@injectivelabs/sdk-ts": "^1.14.41",
+      "@injectivelabs/networks": "^1.14.41",
+      "@injectivelabs/utils": "^1.14.41",
+      "@injectivelabs/ts-types": "^1.14.41",
       "link-module-alias": "1.2.0"
     }
   },
@@ -33,11 +33,11 @@
     "db-init": "ts-node scripts/db-init.ts"
   },
   "dependencies": {
-    "@injectivelabs/networks": "1.0.422",
-    "@injectivelabs/sdk-ts": "1.0.422",
-    "@injectivelabs/ts-types": "1.0.422",
-    "@injectivelabs/utils": "1.0.422",
-    "@injectivelabs/wallet-ts": "1.0.422",
+    "@injectivelabs/networks": "^1.14.41",
+    "@injectivelabs/sdk-ts": "^1.14.41",
+    "@injectivelabs/ts-types": "^1.14.41",
+    "@injectivelabs/utils": "^1.14.41",
+    "@injectivelabs/wallet-ts": "^1.14.41",
     "@magic-sdk/provider": "^24.0.0",
     "@magic-sdk/types": "^24.0.0",
     "magic-sdk": "^24.0.0",
