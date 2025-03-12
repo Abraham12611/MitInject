@@ -23,7 +23,14 @@ const nextConfig = {
     return config;
   },
   experimental: {
-    turbo: false
+    turbo: {
+      loaders: {
+        '.js': ['babel-loader'],
+        '.jsx': ['babel-loader'],
+        '.ts': ['ts-loader'],
+        '.tsx': ['ts-loader']
+      }
+    }
   }
 }
 

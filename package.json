@@ -8,9 +8,10 @@
       "usb": "npm:@abandonware/usb@^2.0.2",
       "@trezor/connect-web": "9.0.5",
       "ws": "^8.18.0",
-      "@magic-sdk/provider": "21.4.1",
-      "@magic-sdk/types": "21.4.1",
-      "magic-sdk": "21.4.1"
+      "@magic-sdk/provider": "18.4.0",
+      "@magic-sdk/types": "18.4.0",
+      "magic-sdk": "18.4.0",
+      "@injectivelabs/wallet-ts": "1.0.422"
     }
   },
   "scripts": {
@@ -31,7 +32,10 @@
     "@injectivelabs/sdk-ts": "^1.14.41",
     "@injectivelabs/ts-types": "^1.14.41",
     "@injectivelabs/utils": "^1.14.41",
-    "@injectivelabs/wallet-ts": "^1.0.0",
+    "@injectivelabs/wallet-ts": "1.0.422",
+    "@magic-sdk/provider": "18.4.0",
+    "@magic-sdk/types": "18.4.0",
+    "magic-sdk": "18.4.0",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
     "@mui/styles": "^6.4.6",
