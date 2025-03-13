@@ -12,16 +12,30 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['@privy-io/react-auth', '@privy-io/wagmi-connector'],
-  webpack: (config, { isServer }) => {
+  transpilePackages: [
+    '@privy-io/react-auth',
+    '@privy-io/wagmi-connector',
+    'magic-sdk',
+    '@magic-sdk/provider',
+    '@magic-sdk/commons',
+    '@magic-sdk/types'
+  ],
+  webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
       net: false,
       tls: false,
-      'magic-sdk': false,
-      '@magic-sdk/provider': false,
-      '@magic-sdk/types': false,
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer'),
+    };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'magic-sdk': require.resolve('magic-sdk'),
+      '@magic-sdk/provider': require.resolve('@magic-sdk/provider'),
+      '@magic-sdk/commons': require.resolve('@magic-sdk/commons'),
+      '@magic-sdk/types': require.resolve('@magic-sdk/types'),
     };
     return config;
   },

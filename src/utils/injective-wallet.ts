@@ -1,24 +1,17 @@
-import { MagicStrategyMock } from './injective-wallet-mock';
+import { 
+  ChainId,
+  EthereumChainId 
+} from '@injectivelabs/ts-types'
+import { 
+  Network,
+  getNetworkInfo
+} from '@injectivelabs/networks'
+import { 
+  Web3Strategy,
+  WalletStrategy as BaseWalletStrategy
+} from '@injectivelabs/sdk-ts'
 
-// Attempt to import the Magic strategy, but catch any errors
-let MagicStrategy: any;
-try {
-  // Use dynamic import to prevent build errors
-  const injectiveWalletTs = require('@injectivelabs/wallet-ts');
-  MagicStrategy = injectiveWalletTs.MagicStrategy;
-} catch (error) {
-  console.warn('Failed to import MagicStrategy, using mock implementation instead');
-  MagicStrategy = MagicStrategyMock;
-}
-
-import {
-  WalletStrategy,
-  WalletEvents
-} from '@injectivelabs/wallet-ts'
-import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
-import { Network } from '@injectivelabs/networks'
-
-// Get network configuration from environmen
+// Get network configuration from environment
 const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet' 
   ? Network.MainnetK8s 
   : Network.TestnetK8s
@@ -28,12 +21,20 @@ const ETHEREUM_CHAIN_ID = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet
   : EthereumChainId.Goerli
 
 // Initialize wallet strategy
-export const walletStrategy = new WalletStrategy({
-  chainId: ChainId.Mainnet, // Will be used for Injective chain
+export const walletStrategy = new BaseWalletStrategy({
+  chainId: ChainId.Mainnet,
   ethereumOptions: {
     chainId: ETHEREUM_CHAIN_ID,
     rpc: {
       mainnet: process.env.NEXT_PUBLIC_INJECTIVE_RPC!,
+    }
+  },
+  walletConnectOptions: {
+    supportedWallets: ['metamask', 'keplr', 'leap', 'cosmostation', 'walletconnect'],
+    disableOptions: {
+      trezor: true,
+      ledger: true,
+      usb: true
     }
   }
 })
