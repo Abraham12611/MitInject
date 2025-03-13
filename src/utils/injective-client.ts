@@ -1,7 +1,7 @@
 import {
   MsgBroadcaster,
   WalletStrategy
-} from '@injectivelabs/wallet-ts'
+} from '@injectivelabs/sdk-ts'
 import{ Network } from '@injectivelabs/networks'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import { 
