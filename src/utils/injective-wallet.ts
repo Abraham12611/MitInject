@@ -6,10 +6,7 @@ import {
   Network,
   getNetworkInfo
 } from '@injectivelabs/networks'
-import { 
-  Web3Strategy,
-  WalletStrategy as BaseWalletStrategy
-} from '@injectivelabs/sdk-ts'
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
 
 // Get network configuration from environment
 const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet' 
@@ -21,7 +18,7 @@ const ETHEREUM_CHAIN_ID = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet
   : EthereumChainId.Goerli
 
 // Initialize wallet strategy
-export const walletStrategy = new BaseWalletStrategy({
+export const walletStrategy = new WalletStrategy({
   chainId: ChainId.Mainnet,
   ethereumOptions: {
     chainId: ETHEREUM_CHAIN_ID,
