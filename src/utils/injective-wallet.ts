@@ -6,7 +6,7 @@ import {
   Network,
   getNetworkInfo
 } from '@injectivelabs/networks'
-import { WalletStrategy } from '@injectivelabs/wallet-ts'
+import { WalletStrategy } from '@injectivelabs/wallet-core'
 
 // Get network configuration from environment
 const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet' 
@@ -16,7 +16,7 @@ const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet'
 const ETHEREUM_CHAIN_ID = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet'
   ? EthereumChainId.Mainnet
   : EthereumChainId.Goerli
-
+s
 // Initialize wallet strategy
 export const walletStrategy = new WalletStrategy({
   chainId: ChainId.Mainnet,
