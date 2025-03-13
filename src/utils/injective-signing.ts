@@ -12,7 +12,7 @@ import {
   MsgCancelSpotOrder,
   MsgCancelDerivativeOrder,
 } from '@injectivelabs/sdk-ts';
-import { MsgBroadcaster } from '@injectivelabs/wallet-ts'
+import { MsgBroadcaster } from '@injectivelabs/wallet-core'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import {
     Network,

@@ -44,6 +44,7 @@
     "@injectivelabs/sdk-ts": "^1.14.41",
     "@injectivelabs/ts-types": "^1.14.41",
     "@injectivelabs/utils": "^1.14.41",
+    "@injectivelabs/wallet-core": "^1.14.41",
     "@magic-sdk/commons": "^25.0.1",
     "@magic-sdk/provider": "^29.0.1",
     "@magic-sdk/types": "^24.18.0",
