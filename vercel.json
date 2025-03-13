@@ -3,18 +3,5 @@
     "env": {
       "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
     }
-  },
-  "buildCommand": "next build",
-  "ignoreCommand": "next lint",
-  "builds": [
-    {
-      "src": "next.config.js",
-      "use": "@vercel/next",
-      "config": {
-        "eslint": {
-          "ignoreDuringBuilds": true
-        }
-      }
-    }
-  ]
+  }
 }
