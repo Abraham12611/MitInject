@@ -6,7 +6,7 @@ import {
   Network,
   getNetworkInfo
 } from '@injectivelabs/networks'
-import { WalletStrategy } from '@injectivelabs/wallet-core'
+import { WalletStrategy } from '@injectivelabs/wallet-ts'
 
 // Get network configuration from environment
 const NETWORK = process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === 'mainnet' 
