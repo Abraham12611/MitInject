@@ -1,8 +1,8 @@
 import {
   MsgBroadcaster,
-  WalletStrategy
 } from '@injectivelabs/wallet-core'
-import{ Network } from '@injectivelabs/networks'
+import { WalletStrategy } from '@injectivelabs/wallet-strategy'
+import { Network } from '@injectivelabs/networks'
 import { EthereumChainId, ChainId } from '@injectivelabs/ts-types'
 import { 
   IndexerGrpcSpotApi, 
