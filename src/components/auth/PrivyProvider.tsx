@@ -39,6 +39,7 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
         wagmiChainsConfig={{
           chains,
           publicClient,
+          webSocketPublicClient,
         }}
       >
         <PrivyAuthProvider>{children}</PrivyAuthProvider>
