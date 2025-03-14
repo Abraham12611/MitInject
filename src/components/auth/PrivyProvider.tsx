@@ -33,7 +33,6 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
           accentColor: '#7C3AED', // Injective purple
           showWalletLoginFirst: true,
         },
-        defaultChain: mainnet,
       }}
     >
       <PrivyWagmiConnector
