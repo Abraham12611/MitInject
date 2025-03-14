@@ -39,6 +39,7 @@ export function PrivyAuthProvider({ children }: { children: React.ReactNode }) {
     authenticated: isAuthenticated,
     ready: isReady,
     user,
+    connectWallet: privyConnectWallet,
   } = usePrivy();
 
   const { wallets } = useWallets();
@@ -67,15 +68,12 @@ export function PrivyAuthProvider({ children }: { children: React.ReactNode }) {
 
   const connectWallet = useCallback(async () => {
     try {
-      if (!activeWallet) {
-        throw new Error('No active wallet');
-      }
-      await activeWallet.connect();
+      await privyConnectWallet();
     } catch (error) {
       console.error('Failed to connect wallet:', error);
       throw error;
     }
-  }, [activeWallet]);
+  }, [privyConnectWallet]);
 
   return (
     <PrivyAuthContext.Provider
