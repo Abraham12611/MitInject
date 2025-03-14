@@ -42,9 +42,10 @@ export function PrivyAuthProvider({ children }: { children: React.ReactNode }) {
   } = usePrivy();
 
   const { wallets } = useWallets();
-  const { address: wagmiAddress } = usePrivyWagmi();
-
+  const { wallet: wagmiWallet } = usePrivyWagmi();
+  
   const activeWallet = wallets[0];
+  const wagmiAddress = wagmiWallet?.address;
 
   const login = useCallback(async () => {
     try {
