@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Bell, Settings } from 'lucide-react';
-import { TaskbarTerminal } from '@/components/defi-os';
 import StatusIndicators from './StatusIndicators';
 import { StatusProvider } from './StatusIndicators/StatusContext';
 import SettingsPopup from './SettingsPopup';
 
-const TaskbarLayout = ({ 
+const TaskbarLayout = ({
   theme,
   showStartMenu,
   setShowStartMenu,
@@ -26,10 +25,10 @@ const TaskbarLayout = ({
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString('en-US', { 
+      setCurrentTime(now.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true 
+        hour12: true
       }));
     };
 
@@ -40,9 +39,9 @@ const TaskbarLayout = ({
 
   return (
     <StatusProvider>
-      <div 
+      <div
         className="fixed bottom-0 left-0 right-0 backdrop-blur-xl border-t z-[150]"
-        style={{ 
+        style={{
           backgroundColor: `${theme.colors.background}CC`,
           borderColor: theme.colors.border,
           color: theme.colors?.text?.primary || theme.colors.text,
@@ -51,8 +50,8 @@ const TaskbarLayout = ({
       >
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setShowStartMenu(!showStartMenu)} 
+            <button
+              onClick={() => setShowStartMenu(!showStartMenu)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Terminal className="w-5 h-5" style={{ color: theme.colors?.text?.secondary || theme.colors.text }} />
@@ -72,36 +71,13 @@ const TaskbarLayout = ({
                 </button>
               );
             })}
-            <div className="h-4 w-px" style={{ backgroundColor: theme.colors.border }} />
-            <button
-              onClick={() => setIsTerminalOpen(!isTerminalOpen)}
-              className={`p-2 hover:bg-white/10 rounded-lg transition-colors ${
-                isTerminalOpen ? 'bg-white/10' : ''
-              }`}
-            >
-              <Terminal className="w-5 h-5" style={{ color: theme.colors?.text?.secondary || theme.colors.text }} />
-            </button>
-            <TaskbarTerminal
-              isOpen={isTerminalOpen}
-              onClose={() => {
-                setIsTerminalOpen(false);
-                setIsChatOpen(false);
-              }}
-              onSubmit={handleTerminalSubmit}
-              onChange={(value) => {
-                if (value.trim().length > 0) {
-                  setIsChatOpen(true);
-                }
-              }}
-              theme={theme}
-            />
           </div>
 
           <div className="flex items-center gap-4">
             <StatusIndicators theme={theme} />
             <div className="h-4 w-px" style={{ backgroundColor: theme.colors.border }} />
             <Bell className="w-5 h-5" style={{ color: theme.colors?.text?.secondary || theme.colors.text }} />
-            <button 
+            <button
               onClick={() => setShowSettings(true)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
@@ -112,26 +88,13 @@ const TaskbarLayout = ({
         </div>
       </div>
 
-      <SettingsPopup 
-        isOpen={showSettings} 
-        onClose={() => setShowSettings(false)} 
+      <SettingsPopup
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
         theme={theme}
         currentTheme={currentTheme}
         setCurrentTheme={setCurrentTheme}
       />
-
-      {isTerminalOpen && (
-        <TaskbarTerminal 
-          onClose={() => setIsTerminalOpen(false)} 
-          onSubmit={handleTerminalSubmit}
-          onChange={(value) => {
-            if (value.trim().length > 0) {
-              setIsChatOpen(true);
-            }
-          }}
-          theme={theme}
-        />
-      )}
     </StatusProvider>
   );
 };
