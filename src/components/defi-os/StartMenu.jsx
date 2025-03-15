@@ -2,9 +2,9 @@ import React from 'react';
 import { animated } from '@react-spring/web';
 import { Radio, BarChart2 } from 'lucide-react';
 
-const StartMenu = ({ 
-  showStartMenu, 
-  startMenuSpring, 
+const StartMenu = ({
+  showStartMenu,
+  startMenuSpring,
   theme,
   apps,
   openApp,
@@ -27,22 +27,22 @@ const StartMenu = ({
         <div className="flex items-center gap-3 mb-4">
           <div className="relative">
             <Radio className="w-5 h-5" style={{ color: theme.colors.accent }} />
-            <div 
+            <div
               className="absolute inset-0 animate-ping"
-              style={{ 
+              style={{
                 background: `${theme.colors.accent}40`,
                 borderRadius: '50%'
-              }} 
+              }}
             />
           </div>
           <span className="text-lg font-medium">DeFi OS</span>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-2">
           {apps.map((app, index) => {
             const Icon = app.icon;
             const isSelected = index === selectedAppIndex;
-            
+
             return (
               <button
                 key={app.id}
@@ -67,4 +67,4 @@ const StartMenu = ({
   );
 };
 
-export default StartMenu; 
+export default StartMenu;
