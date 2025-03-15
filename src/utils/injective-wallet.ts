@@ -1,5 +1,5 @@
 import { ChainId, EthereumChainId } from "@injectivelabs/ts-types";
-import { Network, getNetworkInfo } from "@injectivelabs/networks";
+import { Network } from "@injectivelabs/networks";
 import { WalletStrategy } from "@injectivelabs/wallet-strategy";
 
 // Get network configuration from environment
@@ -11,16 +11,14 @@ const NETWORK =
 const ETHEREUM_CHAIN_ID =
   process.env.NEXT_PUBLIC_INJECTIVE_NETWORK === "mainnet"
     ? EthereumChainId.Mainnet
-    : EthereumChainId.Goerlis;
+    : EthereumChainId.Goerli;
 
 // Initialize wallet strategy
 export const walletStrategy = new WalletStrategy({
   chainId: ChainId.Mainnet,
   ethereumOptions: {
-    chainId: ETHEREUM_CHAIN_ID,
-    rpc: {
-      mainnet: process.env.NEXT_PUBLIC_INJECTIVE_RPC!,
-    },
+    ethereumChainId: ETHEREUM_CHAIN_ID,
+    rpcUrl: process.env.NEXT_PUBLIC_INJECTIVE_RPC!,
   },
   walletConnectOptions: {
     supportedWallets: [
@@ -38,22 +36,24 @@ export const walletStrategy = new WalletStrategy({
   },
 });
 
-// Event handlers
-try {
-  walletStrategy.onAccountChange((account: string) => {
-    console.log("Account changed:", account);
-    // Trigger any necessary UI updates
-  });
+// Only run wallet event handlers on client side
+if (typeof window !== 'undefined') {
+  try {
+    walletStrategy.onAccountChange((account: string) => {
+      console.log("Account changed:", account);
+      // Trigger any necessary UI updates
+    });
 
-  walletStrategy.onChainChanged((chainId: string) => {
-    console.log("Chain changed:", chainId);
-    // Handle chain changes if needed
-  });
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.warn("Wallet features are not available:", error.message);
-  } else {
-    console.warn("Wallet features are not available:", String(error));
+    walletStrategy.onChainIdChange((chainId: string) => {
+      console.log("Chain changed:", chainId);
+      // Handle chain changes if needed
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.warn("Wallet features are not available:", error.message);
+    } else {
+      console.warn("Wallet features are not available:", String(error));
+    }
   }
 }
 
