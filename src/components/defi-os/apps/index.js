@@ -8,7 +8,7 @@ import AssetHeatmap from '../AssetPerformance/AssetHeatmap';
 import IFTTTApp from './IFTTTApp';
 
 // Export the components individually
-export { 
+export {
   PortfolioApp,
   LiquidityApp,
   AirdropApp,
@@ -23,7 +23,7 @@ export const apps = [
   {
     id: 'portfolio',
     icon: Wallet,
-    title: 'Portfolio',
+    title: 'Prtfoli9',
     content: ({ isExpanded, theme }) => (
       <PortfolioApp isExpanded={isExpanded} theme={theme} />
     )
@@ -57,10 +57,10 @@ export const apps = [
     icon: Radio,
     title: 'Live Market Feed',
     content: ({ isExpanded, theme, setIsChatOpen, onChatOpen }) => (
-      <LiveMarketFeed 
-        isExpanded={isExpanded} 
-        theme={theme} 
-        onChatOpen={onChatOpen} 
+      <LiveMarketFeed
+        isExpanded={isExpanded}
+        theme={theme}
+        onChatOpen={onChatOpen}
       />
     )
   },
@@ -70,8 +70,8 @@ export const apps = [
     icon: BarChart2,
     title: 'Asset Performance',
     content: ({ isExpanded, theme, onAssetSelect }) => (
-      <AssetHeatmap 
-        theme={theme} 
+      <AssetHeatmap
+        theme={theme}
         onAssetSelect={onAssetSelect}
       />
     )
@@ -82,10 +82,10 @@ export const apps = [
     icon: Zap,
     title: 'IFTTT',
     content: ({ isExpanded, theme }) => (
-      <IFTTTApp 
+      <IFTTTApp
         isExpanded={isExpanded}
         theme={theme}
       />
     )
   }
-]; 
+];
