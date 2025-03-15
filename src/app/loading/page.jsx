@@ -84,7 +84,7 @@ const LoadingPageContent = () => {
       const interval = setInterval(() => {
         currentProgress += Math.random() * 50;
         console.log('Progress:', currentProgress);
-        
+
         if (currentProgress >= 100 && !loadingComplete.current) {
           console.log('Loading complete');
           loadingComplete.current = true;
@@ -114,16 +114,16 @@ const LoadingPageContent = () => {
     if (showText) {
       const title = document.querySelector('.title-text');
       const subtitle = document.querySelector('.subtitle-text');
-      
+
       const triggerRandomGlitch = () => {
         const elements = [title, subtitle];
         const randomElement = elements[Math.floor(Math.random() * elements.length)];
-        
+
         randomElement?.classList.add('glitch-active');
         setTimeout(() => {
           randomElement?.classList.remove('glitch-active');
         }, 200);
-        
+
         const nextGlitch = Math.random() * 5000 + 2000;
         setTimeout(triggerRandomGlitch, nextGlitch);
       };
@@ -154,15 +154,15 @@ const LoadingPageContent = () => {
 
         {/* Content Container */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <animated.h1 
-            style={titleSpring} 
+          <animated.h1
+            style={titleSpring}
             className="text-6xl font-bold text-white mb-6 glitch title-text backdrop-blur-sm"
             data-text="Mitsui Protocol"
           >
             Mitsui Protocol
           </animated.h1>
-          
-          <animated.h2 
+
+          <animated.h2
             style={subtitleSpring}
             className="text-2xl text-white/80 mb-24 glitch subtitle-text backdrop-blur-sm"
             data-text="The Agent Network"
@@ -172,7 +172,7 @@ const LoadingPageContent = () => {
 
           {showLoadingBar && (
             <div className="w-96 h-1 bg-black/20 rounded-full overflow-hidden backdrop-blur-sm">
-              <div 
+              <div
                 className="h-full bg-black transition-all duration-300 rounded-full"
                 style={{ width: `${progress}%` }}
               />
@@ -189,7 +189,7 @@ const LoadingPageContent = () => {
 
       {/* Registration Modal */}
       {showRegistration && (
-        <animated.div 
+        <animated.div
           style={{
             ...modalWrapperSpring,
             pointerEvents: showRegistration ? 'auto' : 'none',
@@ -217,4 +217,4 @@ export default function LoadingPage() {
       <LoadingPageContent />
     </AuthProvider>
   );
-} 
+}

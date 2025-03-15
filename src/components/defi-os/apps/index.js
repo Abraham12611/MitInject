@@ -23,7 +23,7 @@ export const apps = [
   {
     id: 'portfolio',
     icon: Wallet,
-    title: 'Prtfoli9',
+    title: 'Portfolio',
     content: ({ isExpanded, theme }) => (
       <PortfolioApp isExpanded={isExpanded} theme={theme} />
     )
