@@ -3,18 +3,18 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { Card } from "@/components/ui/card";
-import { 
-  Wallet, Gift, BarChart3, Terminal, Settings, 
+import {
+  Wallet, Gift, BarChart3, Terminal, Settings,
   Radio, Bell, Maximize2, Minus, X,
   Droplets, Clock, Timer, BarChart2
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
-import { 
-  Window, 
-  TimeWidgets, 
-  TaskbarTerminal, 
-  FloatingHeart, 
-  HeartGroup, 
+import {
+  Window,
+  TimeWidgets,
+  TaskbarTerminal,
+  FloatingHeart,
+  HeartGroup,
   ChatMessage,
   ChatDrawer,
   TaskbarLayout,
@@ -134,7 +134,7 @@ const DefiDesktop = () => {
     const x = window.innerWidth - (window.innerWidth * 0.33) + 60; // Align with agent messages
     const id = Date.now();
     setHeartGroups(prev => [...prev, { id, x }]);
-    
+
     setTimeout(() => {
       setHeartGroups(prev => prev.filter(group => group.id !== id));
     }, 3000);
@@ -156,7 +156,7 @@ const DefiDesktop = () => {
 
   const handleTerminalSubmit = async (command) => {
     const timestamp = new Date().toLocaleTimeString();
-    
+
     // Add user message
     const userMessage = {
       id: Date.now(),
@@ -166,10 +166,10 @@ const DefiDesktop = () => {
     };
     setChatMessages(prev => [...prev, userMessage]);
     setIsChatOpen(true);
-    
+
     // Check if message is a thank you
     const isThankYou = /^(thanks|thank you|❤️|🧡|💛|💚|💙|💜|🤎|🖤|🤍|♥️|thank|ty|tysm)$/i.test(command.trim());
-    
+
     if (isThankYou) {
       // First add the agent's heart message
       setTimeout(() => {
@@ -211,7 +211,7 @@ const DefiDesktop = () => {
         });
 
         if (!response.ok) throw new Error('Failed to fetch market analysis');
-        
+
         const data = await response.json();
         setChatMessages(prev => {
           const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
@@ -332,7 +332,7 @@ const DefiDesktop = () => {
           return;
         }
       }
-      
+
       if (action === 'market') {
         if (target === 'sui') {
           setChatMessages(prev => {
@@ -376,7 +376,7 @@ const DefiDesktop = () => {
 
     // If no demo response or command match, use LLM
     const llmResponse = await getLLMResponse(command);
-    
+
     if (llmResponse.thinking) {
       // Replace thinking message with the <think> content
       setChatMessages(prev => {
@@ -434,7 +434,7 @@ const DefiDesktop = () => {
   const apps = useMemo(() => {
     return appsConfig.map(app => ({
       ...app,
-      content: (props) => app.content({ 
+      content: (props) => app.content({
         ...props,
         theme,
         onAssetSelect: setSelectedAsset,
@@ -566,14 +566,14 @@ const DefiDesktop = () => {
       }
 
       const data = await response.json();
-      
+
       if (data.choices && data.choices[0] && data.choices[0].message) {
         const content = data.choices[0].message.content;
-        
+
         // Extract think and response parts
         const thinkMatch = content.match(/<think>(.*?)<\/think>/s);
         const responseText = content.replace(/<think>.*?<\/think>/s, '').trim();
-        
+
         // If the entire content is within think tags, use it as both thinking and response
         if (thinkMatch && !responseText) {
           return {
@@ -581,18 +581,18 @@ const DefiDesktop = () => {
             response: thinkMatch[1].trim()
           };
         }
-        
+
         return {
           thinking: thinkMatch ? thinkMatch[1].trim() : "Let me think about that...",
           response: responseText || "I'm having trouble processing that right now. Could you try again?"
         };
       }
-      
+
       return {
         thinking: "Let me think about that...",
         response: "I'm having trouble processing that right now. Could you try again?"
       };
-      
+
     } catch (error) {
       console.error('Error calling chat API:', error);
       return {
@@ -660,28 +660,37 @@ const DefiDesktop = () => {
 
   return (
     <animated.div style={fadeIn} className="w-screen h-screen">
-      <div 
-        className="min-h-screen overflow-hidden" 
+      <div
+        className="min-h-screen overflow-hidden"
         style={{ backgroundColor: theme.colors.background }}
       >
         <DesktopBackground theme={theme} />
 
         {/* Settings Popup */}
-        <SettingsPopup 
-          isOpen={showSettings} 
-          onClose={() => setShowSettings(false)} 
+        <SettingsPopup
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
           theme={theme}
           currentTheme={currentTheme}
           setCurrentTheme={setCurrentTheme}
         />
 
-        <DesktopIcons 
+        {/* Top Terminal */}
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[200]">
+          <TaskbarTerminal
+            isOpen={true}
+            onSubmit={handleTerminalSubmit}
+            theme={theme}
+          />
+        </div>
+
+        <DesktopIcons
           apps={availableApps}
           openApp={openApp}
           theme={theme}
         />
 
-        <WindowManager 
+        <WindowManager
           openApps={openApps}
           activeApp={activeApp}
           expandedApp={expandedApp}
@@ -693,7 +702,7 @@ const DefiDesktop = () => {
           minimizeApp={minimizeApp}
         />
 
-        <TaskbarLayout 
+        <TaskbarLayout
           theme={theme}
           showStartMenu={showStartMenu}
           setShowStartMenu={setShowStartMenu}
@@ -709,7 +718,7 @@ const DefiDesktop = () => {
           setCurrentTheme={setCurrentTheme}
         />
 
-        <StartMenu 
+        <StartMenu
           showStartMenu={showStartMenu}
           startMenuSpring={startMenuSpring}
           theme={theme}
@@ -720,7 +729,7 @@ const DefiDesktop = () => {
 
         <TimeWidgets theme={theme} />
 
-        <ChatDrawer 
+        <ChatDrawer
           chatContainerRef={chatContainerRef}
           chatDrawerSpring={chatDrawerSpring}
           isChatOpen={isChatOpen}
@@ -749,4 +758,4 @@ const DefiDesktop = () => {
   );
 };
 
-export default DefiDesktop; 
+export default DefiDesktop;
