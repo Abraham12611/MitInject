@@ -51,6 +51,7 @@ const nextConfig = {
         ...config.resolve.alias,
         '@trezor/transport/lib/types/messages': '@trezor/transport/lib/types',
         '@trezor/transport': '@trezor/transport/lib',
+        '@trezor/transport/messages.json': '@trezor/transport/lib/messages.json',
         'magic-sdk': require.resolve('magic-sdk'),
         '@magic-sdk/provider': require.resolve('@magic-sdk/provider'),
         '@magic-sdk/commons': require.resolve('@magic-sdk/commons'),
