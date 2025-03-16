@@ -136,3 +136,6 @@ dist
 .DS_Store
 */.DS_Store
 .replit
+extra/
+.cursor/rules/new-features.mdc
+FEATURES_AND_INTEGRATIONS.md
