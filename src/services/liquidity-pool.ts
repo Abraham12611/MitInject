@@ -3,10 +3,10 @@ import {
   IndexerGrpcSpotApi,
   SpotMarket,
   SpotOrderSide,
-  SpotOrderType,
-  BigNumberInBase
+  SpotOrderType
 } from '@injectivelabs/sdk-ts'
 import { Network } from '@injectivelabs/networks'
+import { BigNumberInBase } from '@injectivelabs/utils'
 import { walletStrategy } from '@/utils/injective-wallet'
 
 export interface PoolPosition {
