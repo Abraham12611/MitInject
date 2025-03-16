@@ -3,8 +3,9 @@ import {
   IndexerGrpcSpotApi,
   IndexerGrpcDerivativesApi,
   ChainGrpcBankApi,
-  TokenService,
-  PriceService
+  IndexerGrpcOracleApi,
+  SpotMarket,
+  DerivativeMarket
 } from '@injectivelabs/sdk-ts'
 import { Network } from '@injectivelabs/networks'
 import { BigNumberInBase } from '@injectivelabs/utils'
@@ -39,13 +40,18 @@ export interface RiskMetrics {
   diversificationScore: string
 }
 
+interface PortfolioSnapshot {
+  timestamp: number
+  value: string
+  pnl: string
+}
+
 class PortfolioAnalyticsService {
   private accountApi: IndexerGrpcAccountApi
   private spotApi: IndexerGrpcSpotApi
   private derivativesApi: IndexerGrpcDerivativesApi
   private bankApi: ChainGrpcBankApi
-  private tokenService: TokenService
-  private priceService: PriceService
+  private oracleApi: IndexerGrpcOracleApi
 
   constructor(network: Network = Network.TestnetK8s) {
     const INDEXER_API = process.env.NEXT_PUBLIC_INJECTIVE_INDEXER!
@@ -55,38 +61,31 @@ class PortfolioAnalyticsService {
     this.spotApi = new IndexerGrpcSpotApi(INDEXER_API)
     this.derivativesApi = new IndexerGrpcDerivativesApi(INDEXER_API)
     this.bankApi = new ChainGrpcBankApi(CHAIN_API)
-    this.tokenService = new TokenService(network)
-    this.priceService = new PriceService(network)
+    this.oracleApi = new IndexerGrpcOracleApi(INDEXER_API)
   }
 
   async getPortfolioAnalytics(address: string): Promise<PortfolioAnalytics> {
     try {
-      // Fetch all required data in parallel
-      const [
-        portfolio,
-        spotMarkets,
-        derivativeMarkets,
-        bankBalances
-      ] = await Promise.all([
-        this.accountApi.fetchAccountPortfolio(address),
-        this.spotApi.fetchMarkets(),
-        this.derivativesApi.fetchMarkets(),
-        this.bankApi.fetchBalances(address)
-      ])
+      // Fetch portfolio data
+      const portfolio = await this.accountApi.fetchPortfolio(address)
+
+      // Fetch market data
+      const spotMarketsResponse = await this.spotApi.fetchMarkets()
+      const derivativeMarketsResponse = await this.derivativesApi.fetchMarkets()
+
+      const spotMarkets = spotMarketsResponse.markets as SpotMarket[]
+      const derivativeMarkets = derivativeMarketsResponse.markets as DerivativeMarket[]
+
+      // Fetch bank balances
+      const { balances: bankBalances } = await this.bankApi.fetchBalances(address)
 
       // Process positions
       const positions = await this.processPositions(
         portfolio,
-        spotMarkets.markets,
-        derivativeMarkets.markets,
-        bankBalances.balances
+        spotMarkets,
+        derivativeMarkets,
+        bankBalances
       )
-
-      // Calculate historical performance
-      const historicalPerformance = await this.calculateHistoricalPerformance(address)
-
-      // Calculate risk metrics
-      const riskMetrics = this.calculateRiskMetrics(positions, historicalPerformance)
 
       // Calculate total value and PNL
       const totalValue = positions.reduce(
@@ -98,6 +97,12 @@ class PortfolioAnalyticsService {
         (sum, pos) => sum.plus(new BigNumberInBase(pos.pnl)),
         new BigNumberInBase(0)
       )
+
+      // Get historical performance
+      const historicalPerformance = await this.calculateHistoricalPerformance(address)
+
+      // Calculate risk metrics
+      const riskMetrics = this.calculateRiskMetrics(positions, historicalPerformance)
 
       return {
         totalValue: totalValue.toString(),
@@ -114,8 +119,8 @@ class PortfolioAnalyticsService {
 
   private async processPositions(
     portfolio: any,
-    spotMarkets: any[],
-    derivativeMarkets: any[],
+    spotMarkets: SpotMarket[],
+    derivativeMarkets: DerivativeMarket[],
     bankBalances: any[]
   ): Promise<Position[]> {
     const positions: Position[] = []
@@ -156,15 +161,19 @@ class PortfolioAnalyticsService {
 
     // Process bank balances
     for (const balance of bankBalances) {
-      const tokenInfo = await this.tokenService.getTokenInfo(balance.denom)
-      if (tokenInfo) {
-        const price = await this.priceService.getPrice(balance.denom)
+      const tokenMetadata = await this.bankApi.fetchDenomMetadata(balance.denom)
+      if (tokenMetadata) {
+        const oraclePrice = await this.oracleApi.fetchOraclePrice({
+          baseSymbol: balance.denom,
+          quoteSymbol: 'USDT'
+        })
+        const price = oraclePrice?.price || '0'
         positions.push({
           marketId: balance.denom,
           denom: balance.denom,
           quantity: balance.amount,
           value: new BigNumberInBase(balance.amount)
-            .times(new BigNumberInBase(price || '0'))
+            .times(new BigNumberInBase(price))
             .toString(),
           pnl: '0', // Bank balances don't have PNL
           type: 'spot'
@@ -178,20 +187,14 @@ class PortfolioAnalyticsService {
   private async calculateHistoricalPerformance(
     address: string
   ): Promise<HistoricalData[]> {
-    // Fetch historical portfolio snapshots
-    const now = Date.now()
-    const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000)
-
     try {
-      const history = await this.accountApi.fetchAccountPortfolioHistory({
-        address,
-        from: thirtyDaysAgo.toString(),
-        to: now.toString()
+      const { snapshots } = await this.accountApi.fetchPortfolioHistory({
+        accountAddress: address,
+        daysToInclude: 30
       })
-
-      return history.map(snapshot => ({
-        timestamp: parseInt(snapshot.timestamp),
-        value: snapshot.totalValue,
+      return snapshots.map((snapshot: PortfolioSnapshot) => ({
+        timestamp: snapshot.timestamp,
+        value: snapshot.value,
         pnl: snapshot.pnl
       }))
     } catch (error) {
