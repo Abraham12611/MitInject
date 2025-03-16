@@ -4,8 +4,9 @@ import {
   IndexerGrpcDerivativesApi,
   ChainGrpcBankApi,
   IndexerGrpcOracleApi,
-  SpotMarket,
-  DerivativeMarket
+  SpotMarketWithToken,
+  DerivativeMarketWithToken,
+  GrpcCoin
 } from '@injectivelabs/sdk-ts'
 import { Network } from '@injectivelabs/networks'
 import { BigNumberInBase } from '@injectivelabs/utils'
@@ -54,37 +55,35 @@ class PortfolioAnalyticsService {
   private oracleApi: IndexerGrpcOracleApi
 
   constructor(network: Network = Network.TestnetK8s) {
-    const INDEXER_API = process.env.NEXT_PUBLIC_INJECTIVE_INDEXER!
-    const CHAIN_API = process.env.NEXT_PUBLIC_INJECTIVE_RPC!
-
-    this.accountApi = new IndexerGrpcAccountApi(INDEXER_API)
-    this.spotApi = new IndexerGrpcSpotApi(INDEXER_API)
-    this.derivativesApi = new IndexerGrpcDerivativesApi(INDEXER_API)
-    this.bankApi = new ChainGrpcBankApi(CHAIN_API)
-    this.oracleApi = new IndexerGrpcOracleApi(INDEXER_API)
+    this.accountApi = new IndexerGrpcAccountApi(network.indexerApi)
+    this.spotApi = new IndexerGrpcSpotApi(network.indexerApi)
+    this.derivativesApi = new IndexerGrpcDerivativesApi(network.indexerApi)
+    this.bankApi = new ChainGrpcBankApi(network.sentryGrpcApi)
+    this.oracleApi = new IndexerGrpcOracleApi(network.indexerApi)
   }
 
   async getPortfolioAnalytics(address: string): Promise<PortfolioAnalytics> {
     try {
       // Fetch portfolio data
-      const portfolio = await this.accountApi.fetchPortfolio(address)
+      const subaccountId = await this.accountApi.fetchSubaccountsList(address)
+      const portfolio = await this.accountApi.fetchSubaccountBalancesList(subaccountId[0])
 
       // Fetch market data
       const spotMarketsResponse = await this.spotApi.fetchMarkets()
       const derivativeMarketsResponse = await this.derivativesApi.fetchMarkets()
 
-      const spotMarkets = spotMarketsResponse.markets as SpotMarket[]
-      const derivativeMarkets = derivativeMarketsResponse.markets as DerivativeMarket[]
+      const spotMarkets = spotMarketsResponse.markets as SpotMarketWithToken[]
+      const derivativeMarkets = derivativeMarketsResponse.markets as DerivativeMarketWithToken[]
 
       // Fetch bank balances
-      const { balances: bankBalances } = await this.bankApi.fetchBalances(address)
+      const bankBalances = await this.bankApi.fetchBalances(address)
 
       // Process positions
       const positions = await this.processPositions(
         portfolio,
         spotMarkets,
         derivativeMarkets,
-        bankBalances
+        bankBalances.balances
       )
 
       // Calculate total value and PNL
@@ -119,22 +118,22 @@ class PortfolioAnalyticsService {
 
   private async processPositions(
     portfolio: any,
-    spotMarkets: SpotMarket[],
-    derivativeMarkets: DerivativeMarket[],
-    bankBalances: any[]
+    spotMarkets: SpotMarketWithToken[],
+    derivativeMarkets: DerivativeMarketWithToken[],
+    bankBalances: GrpcCoin[]
   ): Promise<Position[]> {
     const positions: Position[] = []
 
     // Process spot positions
-    for (const position of portfolio.spotPositions) {
+    for (const position of portfolio.spotPositions || []) {
       const market = spotMarkets.find(m => m.marketId === position.marketId)
-      if (market) {
+      if (market && market.baseToken) {
         positions.push({
           marketId: position.marketId,
           denom: market.baseToken.denom,
           quantity: position.quantity,
           value: new BigNumberInBase(position.quantity)
-            .times(new BigNumberInBase(market.lastPrice))
+            .times(new BigNumberInBase(market.lastPrice || '0'))
             .toString(),
           pnl: this.calculatePositionPnl(position, market),
           type: 'spot'
@@ -143,7 +142,7 @@ class PortfolioAnalyticsService {
     }
 
     // Process derivative positions
-    for (const position of portfolio.derivativePositions) {
+    for (const position of portfolio.derivativePositions || []) {
       const market = derivativeMarkets.find(m => m.marketId === position.marketId)
       if (market) {
         positions.push({
@@ -151,7 +150,7 @@ class PortfolioAnalyticsService {
           denom: market.quoteDenom,
           quantity: position.quantity,
           value: new BigNumberInBase(position.quantity)
-            .times(new BigNumberInBase(market.lastPrice))
+            .times(new BigNumberInBase(market.lastPrice || '0'))
             .toString(),
           pnl: this.calculatePositionPnl(position, market),
           type: 'derivative'
@@ -161,11 +160,11 @@ class PortfolioAnalyticsService {
 
     // Process bank balances
     for (const balance of bankBalances) {
-      const tokenMetadata = await this.bankApi.fetchDenomMetadata(balance.denom)
-      if (tokenMetadata) {
+      try {
         const oraclePrice = await this.oracleApi.fetchOraclePrice({
           baseSymbol: balance.denom,
-          quoteSymbol: 'USDT'
+          quoteSymbol: 'USDT',
+          oracleType: 'pricefeed'
         })
         const price = oraclePrice?.price || '0'
         positions.push({
@@ -178,6 +177,10 @@ class PortfolioAnalyticsService {
           pnl: '0', // Bank balances don't have PNL
           type: 'spot'
         })
+      } catch (error) {
+        console.warn(`Failed to fetch oracle price for ${balance.denom}:`, error)
+        // Skip this balance if we can't get its price
+        continue
       }
     }
 
@@ -188,14 +191,17 @@ class PortfolioAnalyticsService {
     address: string
   ): Promise<HistoricalData[]> {
     try {
-      const { snapshots } = await this.accountApi.fetchPortfolioHistory({
-        accountAddress: address,
-        daysToInclude: 30
+      const subaccountId = await this.accountApi.fetchSubaccountsList(address)
+      const history = await this.accountApi.fetchSubaccountHistory({
+        subaccountId: subaccountId[0],
+        endTime: Math.floor(Date.now() / 1000),
+        startTime: Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60 // 30 days ago
       })
-      return snapshots.map((snapshot: PortfolioSnapshot) => ({
+
+      return history.map((snapshot: any) => ({
         timestamp: snapshot.timestamp,
-        value: snapshot.value,
-        pnl: snapshot.pnl
+        value: snapshot.totalBalance || '0',
+        pnl: snapshot.unrealizedPnl || '0'
       }))
     } catch (error) {
       console.error('Failed to fetch historical performance:', error)
@@ -220,7 +226,7 @@ class PortfolioAnalyticsService {
     )
 
     const weights = positions.map(pos =>
-      new BigNumberInBase(pos.value).div(totalValue).toNumber()
+      totalValue.isZero() ? 0 : new BigNumberInBase(pos.value).div(totalValue).toNumber()
     )
 
     const diversificationScore = this.calculateDiversificationScore(weights)
@@ -263,13 +269,20 @@ class PortfolioAnalyticsService {
   }
 
   private calculatePositionPnl(position: any, market: any): string {
-    const currentValue = new BigNumberInBase(position.quantity)
-      .times(new BigNumberInBase(market.lastPrice))
+    try {
+      const entryPrice = new BigNumberInBase(position.entryPrice || '0')
+      const currentPrice = new BigNumberInBase(market.lastPrice || '0')
+      const quantity = new BigNumberInBase(position.quantity)
 
-    const costBasis = new BigNumberInBase(position.quantity)
-      .times(new BigNumberInBase(position.entryPrice || market.lastPrice))
+      if (entryPrice.isZero() || currentPrice.isZero() || quantity.isZero()) {
+        return '0'
+      }
 
-    return currentValue.minus(costBasis).toString()
+      return quantity.times(currentPrice.minus(entryPrice)).toString()
+    } catch (error) {
+      console.warn('Failed to calculate position PNL:', error)
+      return '0'
+    }
   }
 }
 
