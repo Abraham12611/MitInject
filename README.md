@@ -166,6 +166,22 @@ async function runTradingStrategy() {
 );
 ```
 
+The Helix integration provides real-time market data through Injective's indexer API, allowing users to monitor prices and market conditions across multiple trading pairs:
+
+![Markets](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/helix-int-markets.png)
+
+
+The Strategies tab provides an overview of all configured automated trading rules. Each strategy shows its trigger condition, action, and last execution time. Users can easily manage their strategies by activating or pausing them.
+
+![Strategies](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/helix-int-strategy.png)
+
+The IFTTT system allows users to create conditional strategies. Behind the scenes, this leverages the ConditionFactory and ActionFactory components from our Helix integration.
+
+![Strategies](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/helix-int-new-strategy.png)
+
+![Strategies](https://github.com/Abraham12611/MitInject/blob/main/public/assets/demonstration/helix-int-new-strategy-2.png)
+
+
 This integration provides the foundation for Pool Protocol's advanced automated trading strategies, allowing users to create sophisticated conditional workflows with minimal configuration.
 
 ### Astroport
