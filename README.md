@@ -43,11 +43,11 @@ With Pool Terminal, users can engage in a variety of workflows:
 Pool Protocol implements a comprehensive integration with the Injective Network, providing a robust foundation for DeFi applications. The integration includes wallet management, transaction handling, market data access, and advanced portfolio analytics.
 
 Implementation details can be found here:
-- [Injective Client](https://github.com/Abraham12611/MitInject/src/utils/injective-client.ts): Core integration with Injective APIs for market data and transactions
-- [Injective Wallet](https://github.com/Abraham12611/MitInject/src/utils/injective-wallet.ts): Wallet connection and management for Injective accounts
-- [Injective Signing](https://github.com/Abraham12611/MitInject/src/utils/injective-signing.ts): Transaction signing and order creation functionality
-- [Portfolio Analytics Service](https://github.com/Abraham12611/MitInject/src/services/portfolio-analytics.ts): Advanced portfolio tracking and risk metrics
-- [Liquidity Pool Service](https://github.com/Abraham12611/MitInject/src/services/liquidity-pool.ts): Management of liquidity positions on Injective
+- [Injective Client](https://github.com/Abraham12611/MitInject/blob/main/src/utils/injective-client.ts): Core integration with Injective APIs for market data and transactions
+- [Injective Wallet](https://github.com/Abraham12611/MitInject/blob/main/src/utils/injective-wallet.ts): Wallet connection and management for Injective accounts
+- [Injective Signing](https://github.com/Abraham12611/MitInject/blob/main/src/utils/injective-signing.ts): Transaction signing and order creation functionality
+- [Portfolio Analytics Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/portfolio-analytics.ts): Advanced portfolio tracking and risk metrics
+- [Liquidity Pool Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/liquidity-pool.ts): Management of liquidity positions on Injective
 
 The integration offers several key components:
 
