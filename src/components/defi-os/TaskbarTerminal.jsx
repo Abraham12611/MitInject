@@ -5,6 +5,9 @@ const COMMAND_SUGGESTIONS = [
   { command: '/check airdrops', description: 'Check available airdrops' },
   { command: '/check liquidity', description: 'Check liquidity positions' },
   { command: '/market', description: 'View market trends based on tweets' },
+  { command: '/price inj', description: 'Get INJ token price' },
+  { command: '/portfolio', description: 'View your portfolio' },
+  { command: '/swap 10 inj to usdt', description: 'Swap tokens on Injective' },
   { command: '/help', description: 'Show available commands' }
 ];
 
@@ -55,7 +58,29 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
       } else {
         onSubmit('Error: Could not fetch market analysis');
       }
-    } else {
+    }
+    // Handle /price shortcut
+    else if (commandToSubmit === '/price inj') {
+      onSubmit('Get me the price of INJ');
+    }
+    // Handle /portfolio shortcut
+    else if (commandToSubmit === '/portfolio') {
+      onSubmit('Show me my portfolio');
+    }
+    // Handle /swap shortcut
+    else if (commandToSubmit.startsWith('/swap')) {
+      // Extract the swap parameters from the command
+      const parts = commandToSubmit.split(' ');
+      if (parts.length >= 5) {
+        const amount = parts[1];
+        const fromToken = parts[2];
+        const toToken = parts[4];
+        onSubmit(`swap ${amount} ${fromToken} to ${toToken}`);
+      } else {
+        onSubmit('swap 10 INJ to USDT');
+      }
+    }
+    else {
       onSubmit(commandToSubmit);
     }
 
