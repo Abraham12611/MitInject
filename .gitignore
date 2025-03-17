@@ -139,3 +139,4 @@ dist
 extra/
 .cursor/rules/new-features.mdc
 FEATURES_AND_INTEGRATIONS.md
+.replit

@@ -32,7 +32,9 @@ module.exports = {
   },
 
   // Message types
-  MESSAGES: {},
+  MESSAGES: {
+    // Add any message types needed
+  },
 
   // Any other properties that might be accessed
   connectSrc: '',
