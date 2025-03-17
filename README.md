@@ -558,6 +558,6 @@ NEXT_PUBLIC_BLOCKVISION_WEBSOCKETS=
 pnpm install
 
 # STEP 2: Run terminal
-npm run tauri dev
+npm run dev
 
 ```
