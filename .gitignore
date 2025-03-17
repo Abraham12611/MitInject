@@ -135,3 +135,7 @@ dist
 
 .DS_Store
 */.DS_Store
+extra/helix-integration.md
+extra/
+.cursor/rules/helix-integration.mdc
+.cursor/rules/

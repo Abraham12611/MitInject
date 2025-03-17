@@ -11,6 +11,10 @@
 - [Integrations](#integrations)
   - [Injective Network](#injective-network)
   - [Helix](#helix)
+    - [Market Data Access](#market-data-access)
+    - [Trading Capabilities](#trading-capabilities)
+    - [Liquidity Provision](#liquidity-provision)
+    - [IFTTT System](#ifttt-system)
   - [Astroport](#astroport)
   - [Frontrunner](#frontrunner)
 - [NordStar Integrations](#nordstar-integrations)
@@ -87,33 +91,82 @@ The plan is to create enough timestamp datasets that can be leveraged by the com
 ### Helix
 Helix is Injective's premier decentralized exchange, providing sophisticated trading functionality for spot and derivative markets. Our Pool Protocol integrates with Helix to enable automated trading strategies through our If-This-Then-That (IFTTT) system.
 
-While we're continuing to develop the full integration, the current implementation demonstrates the prototype capability for executing trades based on predefined conditions.
+We have implemented a comprehensive integration with Helix, providing a robust foundation for automated trading and liquidity provision strategies. The integration leverages the official Injective TypeScript SDK to access market data, execute trades, and manage liquidity positions.
 
-The planned full integration will include:
+Implementation details can be found here:
+- [Types and Interfaces](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/types.ts): Core type definitions for the Helix integration
+- [Configuration](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/config.ts): Network and transaction configuration settings
+- [Market Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/market.ts): Real-time market data access and price monitoring
+- [Trading Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/trading.ts): Order execution and position management
+- [Liquidity Service](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/liquidity.ts):
+- [Integration Index](https://github.com/Abraham12611/MitInject/blob/main/src/services/helix/index.ts): Unified exports for easy access to integration components
+
+The integration offers several key components:
 
 1. **Market Data Access**
-   - Real-time price feeds from Helix markets
-   - Order book monitoring
-   - Trade execution confirmation
+   - Real-time price feeds and order book data from Helix markets
+   - Streaming trade data with threshold-based triggers
+   - Comprehensive market information and historical trades
 
 2. **Trading Capabilities**
-   - Spot market order execution
-   - Limit order placement
-   - Position management
-   - Automated strategy execution
+   - Spot market order execution with custom parameters
+   - Conditional order creation based on price thresholds
+   - Order cancellation and management
 
 3. **Liquidity Provision**
-   - Participation in Helix liquidity pools
-   - Fee earning from trading activity
-   - LP token management
+   - Limit order creation for liquidity depth
+   - Automated liquidity rebalancing with target spreads
+   - Position management across multiple markets
 
-The current demonstration allows for basic conditional trading:
+4. **IFTTT System**
+   - Flexible condition-based triggers for automated trading
+   - Factory pattern for creating common conditions and actions
+   - Support for custom logic and complex multi-condition strategies
 
+The integration enables sophisticated conditional trading workflows such as:
+
+```typescript
+// Complete implementation of an INJ price-triggered swap strategy
+import {
+  IftttRule,
+  ConditionFactory,
+  ActionFactory,
+  HelixMarketService
+} from './services/helix';
+
+// Initialize the factories and services
+const marketService = new HelixMarketService('mainnet');
+const conditionFactory = new ConditionFactory('mainnet');
+const actionFactory = new ActionFactory('mainnet');
+
+// Create a scheduled function to check price conditions and execute trades
+async function runTradingStrategy() {
+  // Set up price monitoring for INJ/USDT market
+  const injPriceCondition = conditionFactory.createPriceAboveCondition(
+    'inj_usdt_market_id',
+    '20.00' // Price threshold
+  );
+
+  // Create an action to swap USDT to USDC
+  const swapAction = actionFactory.createSwapAction('Swap 0.1 USDT to USDC');
+
+  // Create and evaluate the rule
+  const rule = new IftttRule(
+    injPriceCondition,
+    swapAction,
+    {
+      privateKeyHex: process.env.PRIVATE_KEY,
+      marketId: 'usdt_usdc_market_id',
+      orderSide: 'BUY',
+      quantity: '0.1',
+      price: '1.001'  // Slightly above 1:1 to ensure execution
+    });
+    console.log('Swap executed: 0.1 USDT to USDC');
+  }
+);
 ```
-If $INJ is above $20.00
-Then swap 0.1 USDT to USDC
-```
 
+This integration provides the foundation for Pool Protocol's advanced automated trading strategies, allowing users to create sophisticated conditional workflows with minimal configuration.
 
 ### Astroport
 Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. This integration enables users to access liquid trading pools across multiple Cosmos-based chains, including Terra and Injective.
