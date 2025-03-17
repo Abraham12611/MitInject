@@ -541,7 +541,6 @@ NEXT_PUBLIC_GOOGLE_DESKTOP_CLIENT_ID=
 NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=
 
 OPENAI_API_KEY=
-INJECTIVE_API_KEY=
 INJECTIVE_NODE_URL=https://lcd.injective.network
 INJECTIVE_EXPLORER_API=https://explorer.injective.network/api
 NEXT_PUBLIC_PUBLIC_KEY=
@@ -558,6 +557,6 @@ NEXT_PUBLIC_BLOCKVISION_WEBSOCKETS=
 pnpm install
 
 # STEP 2: Run terminal
-npm run dev
+pnpm dev
 
 ```
