@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+const IgnoreTrezorPlugin = require('./src/utils/webpack-ignore-plugin');
+const path = require('path');
+
 const nextConfig = {
     images: {
       unoptimized: true,
@@ -19,19 +22,11 @@ const nextConfig = {
       '@magic-sdk/provider',
       '@magic-sdk/commons',
       '@magic-sdk/types',
-      '@trezor/connect-web',
-      '@trezor/connect',
-      '@trezor/transport',
-      '@trezor/utils',
-      '@trezor/protocol',
-      '@trezor/blockchain-link',
-      '@trezor/device-utils',
       '@injectivelabs/wallet-ts',
       '@injectivelabs/sdk-ts',
       '@injectivelabs/networks',
       '@injectivelabs/utils',
       '@injectivelabs/ts-types',
-      '@injectivelabs/wallet-trezor',
       '@injectivelabs/wallet-strategy'
     ],
     webpack: (config, { isServer }) => {
@@ -64,34 +59,40 @@ const nextConfig = {
           type: 'json'
         });
 
-        // Configure aliases for Trezor packages
-        config.resolve.alias = {
-          ...config.resolve.alias,
-          '@trezor/transport/lib/types/messages': require.resolve('@trezor/transport/lib/types'),
-          '@trezor/transport': require.resolve('@trezor/transport'),
-          '@trezor/connect': require.resolve('@trezor/connect-web'),
-          '@trezor/utils': require.resolve('@trezor/utils'),
-          '@trezor/protocol': require.resolve('@trezor/protocol'),
-          '@trezor/blockchain-link': require.resolve('@trezor/blockchain-link'),
-          '@trezor/device-utils': require.resolve('@trezor/device-utils'),
-          '@trezor/connect/lib/index': require.resolve('@trezor/connect-web'),
-        };
-
         // Add specific rule for handling .d.ts files
         config.module.rules.push({
           test: /\.d\.ts$/,
           loader: 'ignore-loader'
         });
 
-        // Add an empty module for the problematic import
-        config.resolve.alias['@trezor/transport/lib/types/messages'] =
-          require.resolve('./src/utils/empty-module.js');
+        // Add rule to ignore Trezor modules
+        config.module.rules.push({
+          test: /[\\/]node_modules[\\/](@trezor|@injectivelabs[\\/]wallet-trezor)[\\/]/,
+          loader: path.resolve('./src/utils/null-loader.js')
+        });
+
+        // Completely exclude all Trezor-related packages
+        config.resolve.alias = {
+          ...config.resolve.alias,
+          '@trezor/transport': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/connect': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/connect-web': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/utils': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/protocol': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/blockchain-link': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/device-utils': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/transport/lib/types/messages': require.resolve('./src/utils/empty-module.js'),
+          '@trezor/connect/lib/data/connectSettings': require.resolve('./src/utils/empty-connectSettings.js'),
+          '@injectivelabs/wallet-trezor': require.resolve('./src/utils/empty-module.js'),
+        };
+
+        // Add our custom plugin to ignore Trezor modules
+        config.plugins.push(new IgnoreTrezorPlugin());
       }
 
       return config;
     },
     experimental: {
-      esmExternals: 'loose',
       externalDir: true,
     },
     eslint: {
