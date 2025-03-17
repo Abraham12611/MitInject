@@ -327,20 +327,48 @@ This implementation provides the foundation for Pool Protocol's advanced cross-c
 
 ## NordStar Integrations
 
-Pool Protocol leverages the powerful NordStar framework (based on CAMEL-AI's OWL technology) to provide advanced market analysis capabilities for Injective. Our implementation creates an agent-based society that performs complex financial analysis tasks to give users an edge in DeFi trading.
+NordStar is a sophisticated network of AI agents specifically configured for Pool Protocol to provide advanced market analysis capabilities for the Injective ecosystem. This purpose-built system integrates multiple specialized tools, data sources, and analytical frameworks to deliver actionable financial intelligence. NordStar's agent-based architecture enables complex financial analysis tasks that give users a significant edge in DeFi trading environments.
 
 Implementation details can be found here:
-- [Injective Analysis System](https://github.com/Abraham12611/MitInject/owl/examples/run_injective_analysis.py): Core market analysis engine for Injective assets
-- [Agent Orchestration Utilities](https://github.com/Abraham12611/MitInject/owl/owl/utils/__init__.py): Framework for coordinating AI agents in market analysis
+
+Core Toolkit Integrations:
+- [Toolkit Configuration](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/toolkits/__init__.py): Central registry of specialized analysis toolkits
+- [Injective Toolkit](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/toolkits/injective_toolkit.py): Advanced tools for Injective Protocol interactions
+- [Web3 Analysis Toolkit](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/toolkits/web3_analysis_toolkit.py): Comprehensive blockchain analytics toolkit
+
+Core Agent Framework:
+- [Agent Orchestration Framework](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/utils/__init__.py): Coordination system for AI agent interactions
+- [Common Utilities](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/utils/common.py): Shared utilities for data processing
+- [Document Processing](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/utils/document_toolkit.py): Tools for analyzing documentation and research
+- [Enhanced Role Playing](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/utils/enhanced_role_playing.py): Advanced agent interaction protocols
+- [GAIA Framework](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/utils/gaia.py): General AI Assistant integration framework
+
+Core System Components:
+- [Web Application](https://github.com/Abraham12611/MitInject/blob/main/nordstar/nordstar/webapp.py): User interface for NordStar analysis system
 
 ### Trend Analysis
 
-Pool Protocol's trend analysis module uses NordStar to monitor market sentiment, social media trends, and on-chain activity to identify emerging patterns before they become obvious to the broader market.
+Pool Protocol's trend analysis module leverages NordStar to monitor market sentiment, social media trends, and on-chain activity to identify emerging patterns before they become obvious to the broader market.
 
-The implementation utilizes a multi-agent system that employs:
-- Data collection agents to gather information from diverse sources
-- Analysis agents that process and interpret the data
-- Strategy agents that generate actionable insights
+The system operates through multiple specialized agent teams:
+
+1. **Data Collection Agents**
+   - **Social Media Monitors**: Track Twitter, Discord, and Telegram content using platform-specific APIs
+   - **News Aggregators**: Collect and categorize financial news from over 50 crypto publications
+   - **On-Chain Activity Trackers**: Monitor blockchain transactions across multiple networks with a focus on Injective
+   - **Community Sentiment Analyzers**: Process community discussions to gauge market sentiment
+
+2. **Processing Agents**
+   - **Language Processors**: Filter and analyze textual content to extract meaningful signals
+   - **Pattern Recognizers**: Identify recurring patterns across multiple data sources
+   - **Context Analyzers**: Understand relationships between different market events
+   - **Timeline Correlators**: Map temporal relationships between events and market movements
+
+3. **Intelligence Synthesis Agents**
+   - **Insight Generators**: Combine signals into actionable trading intelligence
+   - **Alert Prioritizers**: Rank alerts by potential market impact and confidence level
+   - **Strategy Formulators**: Convert trend insights into potential trading strategies
+   - **Anomaly Detectors**: Identify unusual patterns that might indicate major market shifts
 
 ```
                  +----------------+
@@ -358,21 +386,63 @@ The implementation utilizes a multi-agent system that employs:
 +----------------+    +----------------+    +----------------+
 ```
 
+#### Real-World Implementation Workflow
+
+When running a prompt, NordStar initiates a comprehensive but resource-efficient DeFi analysis workflow:
+
+1. The system first establishes secure connections to key data sources:
+   - Public APIs like DeFiLlama for TVL and protocol metrics
+   - Etherscan for gas prices and network activity when API keys are available
+   - Blockchain RPCs for direct on-chain data when appropriate credentials exist
+
+2. NordStar's data collection agents then:
+   - Gather time-series TVL data across multiple chains with historical context
+   - Track protocol-specific metrics including dominance and growth rates
+   - Monitor network conditions that might affect transaction viability
+   - Compile data into structured formats optimized for analysis
+
+3. For persistent data and enhanced analysis:
+   - Historical data is stored in vector databases using pgvector for efficient retrieval
+   - Semantic search capabilities enable rapid comparison with past market conditions
+   - Cached results provide performance optimization while maintaining data freshness
+   - Privacy-preserving mechanisms ensure user data security
+
+4. The intelligence layer then:
+   - Identifies chains and protocols with momentum shifts
+   - Compares current market structure with historical patterns
+   - Generates forward-looking hypotheses about market movements
+   - Delivers actionable insights through the Pool Protocol interface
+
 Our trend analysis system can:
-- Monitor Twitter, Discord, and Telegram for mentions of specific tokens
-- Analyze sentiment shifts in real-time
-- Track wallet movements of known influencers
-- Generate alerts for sudden changes in market sentiment
-- Provide actionable insights through the If-This-Then-That system
+- Monitor mentions of specific tokens across platforms, with sensitivity tuning for signal strength
+- Track sentiment shifts with granular time-series capabilities to identify inflection points
+- Monitor wallet movements of known influencers and institutional players
+- Generate real-time alerts when sentiment metrics cross configurable thresholds
+- Deliver actionable insights to users through both the UI and automated strategy execution
 
 ### Technical Analysis
 
-The technical analysis module uses NordStar to process market data, identify patterns, and generate trading signals based on traditional and advanced indicators.
+The technical analysis module relies on NordStar's specialized agent networks to process market data, identify patterns, and generate trading signals based on both traditional and advanced indicators.
 
-The implementation leverages specialized agents focused on:
-- Pattern recognition in price charts
-- Indicator calculation and interpretation
-- Signal generation based on multiple data sources
+The implementation employs several agent teams:
+
+1. **Data Engineering Agents**
+   - **Market Data Collectors**: Gather price, volume, and order book data across exchanges
+   - **Timeframe Specialists**: Process data at multiple timeframes from 1-minute to weekly
+   - **Normalization Experts**: Standardize data formats for consistent analysis
+   - **Quality Assurance Monitors**: Ensure data completeness and accuracy
+
+2. **Analytical Processing Agents**
+   - **Indicator Calculators**: Compute technical indicators (RSI, MACD, Bollinger Bands, etc.)
+   - **Chart Pattern Recognizers**: Identify classic patterns (Head & Shoulders, Double Tops, etc.)
+   - **Volatility Assessors**: Analyze market volatility components and trends
+   - **Volume Profile Analyzers**: Examine trading volumes at price levels
+
+3. **Signal Generation Agents**
+   - **Multi-Factor Evaluators**: Combine indicators to generate robust signals
+   - **False Signal Filters**: Reduce noise through confirmation requirements
+   - **Confidence Scorers**: Assign probability metrics to potential signals
+   - **Trading Logic Implementers**: Convert signals to precise entry/exit rules
 
 ```
           +-------------------+
@@ -399,26 +469,68 @@ The implementation leverages specialized agents focused on:
    +--------------------------------+
 ```
 
-Our technical analysis system includes:
-- Real-time calculation of 30+ technical indicators
-- Pattern recognition for chart formations
-- Multi-timeframe analysis
-- Backtesting capabilities
-- Custom strategy builder
-- Automated trade execution via If-This-Then-That
+#### Technical analysis Workflow
 
-## Features
+For technical analysis, NordStar implements a focused market analysis sequence:
 
-### Mini Apps
-<img src="https://github.com/user-attachments/assets/7150a8a2-c45c-46b8-ba40-8eb218cbd" alt="Pool Mini App" width="600"/>
+1. The system first establishes connections to essential market data:
+   - Exchange APIs (via ccxt) to access current and historical price data
+   - Injective-specific data providers for specialized market metrics
+   - Reference databases of historical performance patterns
 
-### Market Feed Example
+2. NordStar's technical analysis agents then:
+   - Calculate essential indicators based on retrieved market data
+   - Compare current market conditions with historical contexts
+   - Identify potential price action patterns with statistical relevance
+   - Generate a consolidated view of market conditions with confidence levels
 
-<img src="https://github.com/user-attachments/assets/4f79a398-668e-bdad-10502f816166" alt="Pool Market Feed" width="600"/>
+3. For enhanced analysis when appropriate credentials exist:
+   - Price data is enriched with order book depth metrics
+   - Volume is analyzed for divergence patterns and unusual activity
+   - Market microstructure is examined for institutional footprints
+   - Correlations with related assets are established
 
-<img src="https://github.com/user-attachments/assets/da28bbbe-d4e13-a171-2e1718dc8a98" alt="Pool Market Feed" width="600"/>
+4. The intelligence layer then:
+   - Synthesizes technical indicators into clear market signals
+   - Assigns confidence levels based on indicator convergence
+   - Generates specific price targets and risk levels
+   - Delivers actionable trading recommendations
 
-<img src="https://github.com/user-attachments/assets/e3fefb79-48ae-a947-bee379bb29a8" alt="Pool Market Feed" width="600"/>
+In a full implementation, NordStar technical analysis includes:
+- Real-time calculation of over 50 technical indicators with optimized algorithms
+- Pattern recognition with machine learning models trained on historical price action
+- Multi-timeframe analysis with intelligent timeframe correlation
+- Comprehensive backtesting against historical data with performance metrics
+- Custom strategy building with adjustable parameters and risk controls
+- Automated trade execution via Pool Protocol's If-This-Then-That system
+
+### Agent Collaboration Framework
+
+NordStar's true power comes from its agent collaboration framework, where specialized agents work together to create insights greater than the sum of their parts:
+
+1. **Hierarchical Collaboration**
+   - Specialized agents focus on narrow tasks within their expertise
+   - Supervisor agents coordinate activity and resolve conflicts
+   - Synthesis agents combine insights from multiple domains
+   - Executive agents translate insights into actionable recommendations
+
+2. **Multi-Modal Analysis**
+   - Technical indicators provide quantitative market structure insights
+   - Sentiment analysis captures qualitative market psychology
+   - On-chain analytics reveal actual fund movements and contract interactions
+   - Economic metrics provide contextual macro environment understanding
+
+3. **Temporal Integration**
+   - Short-term signals (minutes to hours) capture immediate opportunities
+   - Medium-term analysis (days to weeks) identifies developing trends
+   - Long-term studies (weeks to months) establish market context
+   - Time-series correlations enhance prediction capabilities
+
+4. **Adaptive Learning**
+   - Performance metrics track prediction accuracy
+   - Feedback loops refine analytical methods
+   - Weighting algorithms prioritize consistently successful signals
+   - Environmental context shifts analytical focus based on market conditions
 
 ## Run
 
