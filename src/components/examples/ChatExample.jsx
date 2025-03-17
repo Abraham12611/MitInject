@@ -6,6 +6,7 @@ import {
   AgentThinking
 } from '@/components/defi-os';
 import chatService from '@/services/ChatService';
+import { getResponse, DEMO_RESPONSES } from '@/config/demo-chat';
 
 // Helper function to generate a unique ID
 const generateId = () => Math.random().toString(36).substring(2, 11);
@@ -51,9 +52,36 @@ const ChatExample = ({ theme }) => {
       return;
     }
 
-    // Process the message
+    // First check for demo responses
+    const commandLower = message.toLowerCase().trim();
+    let demoResponse = null;
+
+    // Check greetings first
+    if (DEMO_RESPONSES.greetings[commandLower]) {
+      demoResponse = DEMO_RESPONSES.greetings[commandLower];
+    } else {
+      // Check other categories
+      for (const category in DEMO_RESPONSES) {
+        if (category !== 'greetings' && DEMO_RESPONSES[category][commandLower]) {
+          demoResponse = getResponse(category, commandLower);
+          break;
+        }
+      }
+    }
+
+    if (demoResponse) {
+      setChatMessages(prev => [...prev, {
+        id: generateId(),
+        content: demoResponse,
+        isUser: false,
+        timestamp: getCurrentTime()
+      }]);
+      return;
+    }
+
+    // Process the message with chatService
     try {
-      // Parse intent and set thinking state
+      // Parse intent and get responses
       const responses = await chatService.processMessage(message);
 
       // Add responses to chat

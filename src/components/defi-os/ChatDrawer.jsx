@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { animated } from '@react-spring/web';
 import { Settings, X } from 'lucide-react';
-import { ChatMessage } from '@/components/defi-os';
+import ChatMessage from './ChatMessage';
 import ChatSettingsModal from './ChatSettingsModal';
 import AgentThinking from './AgentThinking';
 

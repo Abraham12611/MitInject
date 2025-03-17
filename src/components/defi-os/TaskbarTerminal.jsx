@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
+import chatService from '@/services/ChatService';
 
 const COMMAND_SUGGESTIONS = [
   { command: '/check airdrops', description: 'Check available airdrops' },
@@ -50,22 +51,13 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
       commandToSubmit = filteredSuggestions[selectedSuggestionIndex].command;
     }
 
-    // Handle /market command
-    if (commandToSubmit === '/market') {
-      const blobId = await getLatestBlobId();
-      if (blobId) {
-        onSubmit(`/market ${blobId}`);
-      } else {
-        onSubmit('Error: Could not fetch market analysis');
-      }
-    }
     // Handle /price shortcut
-    else if (commandToSubmit === '/price inj') {
-      onSubmit('Get me the price of INJ');
+    if (commandToSubmit === '/price inj') {
+      commandToSubmit = 'Get me the price of INJ';
     }
     // Handle /portfolio shortcut
     else if (commandToSubmit === '/portfolio') {
-      onSubmit('Show me my portfolio');
+      commandToSubmit = 'Show me my portfolio';
     }
     // Handle /swap shortcut
     else if (commandToSubmit.startsWith('/swap')) {
@@ -75,15 +67,13 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
         const amount = parts[1];
         const fromToken = parts[2];
         const toToken = parts[4];
-        onSubmit(`swap ${amount} ${fromToken} to ${toToken}`);
+        commandToSubmit = `swap ${amount} ${fromToken} to ${toToken}`;
       } else {
-        onSubmit('swap 10 INJ to USDT');
+        commandToSubmit = 'swap 10 INJ to USDT';
       }
     }
-    else {
-      onSubmit(commandToSubmit);
-    }
 
+    onSubmit(commandToSubmit);
     setInput('');
     setShowSuggestions(false);
     setSelectedSuggestionIndex(-1);
