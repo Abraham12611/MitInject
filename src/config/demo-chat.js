@@ -3,9 +3,9 @@ export const DEMO_RESPONSES = {
   // General greetings and common interactions
   greetings: {
     "hi": "Hello! I'm Mitsui, your DeFi companion. How can I help you today?",
-    "hello": "Hi there! Ready to explore the world of DeFi together?",
+    "hello": "Hi there! Ready to explore Injective together?",
     "gm": "Hi Alice, ready to print? 😊",
-    "help": "I can help you with portfolio tracking, liquidity management, airdrop hunting, and market news. What would you like to explore?",
+    "help": "I can help you with portfolio tracking, price information, swaps on Injective, and other DeFi activities. How can I assist you?",
     "open chat window": "Would you like me to summarize the key points from the feed?",
     "Do you want me to summarize the information?": "I'd be happy to help summarize the key points from the KOL feed! Would you like me to focus on:\n\n1. Latest market trends\n2. Project updates\n3. Trading opportunities\n\nJust let me know what interests you most!"
   },
@@ -65,16 +65,86 @@ export const DEMO_RESPONSES = {
     "wagmi": "We're all gonna make it! 🚀",
     "ngmi": "Stay positive! Every dip is a buying opportunity 📈",
     "wen moon": "Focus on building! The moon will come when you least expect it 🌕",
+  },
+
+  // Injective-specific responses
+  injective: {
+    // Token price responses
+    "price": {
+      "thinking": [
+        "Let me check the current price of that token...",
+        "Fetching the latest price data from Injective...",
+        "Looking up the token price information..."
+      ],
+      "not_found": "I couldn't find information for that token. Injective supports INJ, ATOM, ETH, USDT, and several other tokens. Could you try asking for one of these?",
+      "error": "I had trouble fetching the price data. The Injective API might be experiencing issues. Please try again in a moment."
+    },
+
+    // Portfolio responses
+    "portfolio": {
+      "thinking": [
+        "Fetching your portfolio data from Injective...",
+        "Calculating your current portfolio value and allocations...",
+        "Analyzing your Injective holdings..."
+      ],
+      "not_found": "I couldn't retrieve your portfolio information. Make sure your wallet is connected to Injective.",
+      "error": "There was an error retrieving your portfolio data. Please ensure you're connected to the Injective network."
+    },
+
+    // Swap responses
+    "swap": {
+      "thinking": [
+        "Calculating the best swap route on Injective...",
+        "Checking liquidity pools for optimal rates...",
+        "Preparing your swap transaction on Injective..."
+      ],
+      "confirmation": "I've prepared a swap for you. Would you like to proceed with this transaction?",
+      "not_enough_balance": "You don't have enough balance to complete this swap. Please check your funds and try again.",
+      "error": "There was an error preparing your swap. This could be due to insufficient liquidity or network issues. Please try again."
+    },
+
+    // Liquidity pool responses
+    "pools": {
+      "thinking": [
+        "Fetching liquidity pool data from Injective...",
+        "Analyzing top performing pools on Injective...",
+        "Calculating APRs and rewards for Injective pools..."
+      ],
+      "not_found": "I couldn't find information about that specific pool on Injective.",
+      "error": "There was an error retrieving pool data from Injective. Please try again in a moment."
+    },
+
+    // Transaction responses
+    "transaction": {
+      "thinking": [
+        "Sending your transaction to the Injective network...",
+        "Waiting for transaction confirmation...",
+        "Verifying transaction on Injective chain..."
+      ],
+      "success": "Your transaction was successfully processed on Injective!",
+      "error": "The transaction failed. This could be due to network congestion, insufficient gas, or another issue. Please try again.",
+      "pending": "Your transaction is still being processed on the Injective network. This shouldn't take long."
+    }
   }
 };
 
 // Helper function to get a response
 export const getResponse = (category, key) => {
   if (!DEMO_RESPONSES[category]) return DEMO_RESPONSES.errors.default;
-  
+
   const response = DEMO_RESPONSES[category][key];
   if (!response) return DEMO_RESPONSES.errors.default;
-  
+
   // If response is an array, return a random item
   return Array.isArray(response) ? response[Math.floor(Math.random() * response.length)] : response;
-}; 
+};
+
+// Helper to get a thinking message for Injective operations
+export const getThinkingMessage = (operation) => {
+  if (!DEMO_RESPONSES.injective[operation] || !DEMO_RESPONSES.injective[operation].thinking) {
+    return "Thinking...";
+  }
+
+  const thinkingMessages = DEMO_RESPONSES.injective[operation].thinking;
+  return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+};

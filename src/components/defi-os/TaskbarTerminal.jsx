@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
+import chatService from '@/services/ChatService';
 
 const COMMAND_SUGGESTIONS = [
   { command: '/check airdrops', description: 'Check available airdrops' },
   { command: '/check liquidity', description: 'Check liquidity positions' },
   { command: '/market', description: 'View market trends based on tweets' },
+  { command: '/price inj', description: 'Get INJ token price' },
+  { command: '/portfolio', description: 'View your portfolio' },
+  { command: '/swap 10 inj to usdt', description: 'Swap tokens on Injective' },
   { command: '/help', description: 'Show available commands' }
 ];
 
@@ -47,18 +51,29 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
       commandToSubmit = filteredSuggestions[selectedSuggestionIndex].command;
     }
 
-    // Handle /market command
-    if (commandToSubmit === '/market') {
-      const blobId = await getLatestBlobId();
-      if (blobId) {
-        onSubmit(`/market ${blobId}`);
+    // Handle /price shortcut
+    if (commandToSubmit === '/price inj') {
+      commandToSubmit = 'Get me the price of INJ';
+    }
+    // Handle /portfolio shortcut
+    else if (commandToSubmit === '/portfolio') {
+      commandToSubmit = 'Show me my portfolio';
+    }
+    // Handle /swap shortcut
+    else if (commandToSubmit.startsWith('/swap')) {
+      // Extract the swap parameters from the command
+      const parts = commandToSubmit.split(' ');
+      if (parts.length >= 5) {
+        const amount = parts[1];
+        const fromToken = parts[2];
+        const toToken = parts[4];
+        commandToSubmit = `swap ${amount} ${fromToken} to ${toToken}`;
       } else {
-        onSubmit('Error: Could not fetch market analysis');
+        commandToSubmit = 'swap 10 INJ to USDT';
       }
-    } else {
-      onSubmit(commandToSubmit);
     }
 
+    onSubmit(commandToSubmit);
     setInput('');
     setShowSuggestions(false);
     setSelectedSuggestionIndex(-1);

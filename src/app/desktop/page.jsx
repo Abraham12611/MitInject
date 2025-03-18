@@ -160,7 +160,7 @@ const DefiDesktop = () => {
     // Add user message
     const userMessage = {
       id: Date.now(),
-      text: command,
+      content: command,
       timestamp,
       isUser: true
     };
@@ -175,7 +175,7 @@ const DefiDesktop = () => {
       setTimeout(() => {
         const aiMessage = {
           id: Date.now() + 1,
-          text: "❤️",
+          content: "❤️",
           timestamp: new Date().toLocaleTimeString(),
           isUser: false
         };
@@ -190,53 +190,11 @@ const DefiDesktop = () => {
     const thinkingMessageId = Date.now() + 1;
     const initialThinkingMessage = {
       id: thinkingMessageId,
-      text: "Let me think about that...",
+      content: "Let me think about that...",
       timestamp: new Date().toLocaleTimeString(),
       isUser: false
     };
     setChatMessages(prev => [...prev, initialThinkingMessage]);
-
-    // Handle /market command
-    const marketCommand = command.match(/^\/market\s+([^\s]+)/);
-    if (marketCommand) {
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: command
-          })
-        });
-
-        if (!response.ok) throw new Error('Failed to fetch market analysis');
-
-        const data = await response.json();
-        setChatMessages(prev => {
-          const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
-          return [...withoutThinking, {
-            id: Date.now() + 2,
-            text: data.choices[0].message.content,
-            timestamp: new Date().toLocaleTimeString(),
-            isUser: false
-          }];
-        });
-        return;
-      } catch (error) {
-        console.error('Error fetching market analysis:', error);
-        setChatMessages(prev => {
-          const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
-          return [...withoutThinking, {
-            id: Date.now() + 2,
-            text: "Sorry, I couldn't fetch the market analysis. Please try again later.",
-            timestamp: new Date().toLocaleTimeString(),
-            isUser: false
-          }];
-        });
-        return;
-      }
-    }
 
     // First check for demo responses
     const commandLower = command.toLowerCase().trim();
@@ -261,7 +219,7 @@ const DefiDesktop = () => {
         const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
         return [...withoutThinking, {
           id: Date.now() + 2,
-          text: demoResponse,
+          content: demoResponse,
           timestamp: new Date().toLocaleTimeString(),
           isUser: false
         }];
@@ -277,7 +235,7 @@ const DefiDesktop = () => {
           const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
           return [...withoutThinking, {
             id: Date.now() + 2,
-            text: DEMO_RESPONSES.commands[commandLower],
+            content: DEMO_RESPONSES.commands[commandLower],
             timestamp: new Date().toLocaleTimeString(),
             isUser: false
           }];
@@ -297,7 +255,7 @@ const DefiDesktop = () => {
           const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
           return [...withoutThinking, {
             id: Date.now() + 2,
-            text: DEMO_RESPONSES.commands[fullCommand],
+            content: DEMO_RESPONSES.commands[fullCommand],
             timestamp: new Date().toLocaleTimeString(),
             isUser: false
           }];
@@ -312,7 +270,7 @@ const DefiDesktop = () => {
             const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
             return [...withoutThinking, {
               id: Date.now() + 2,
-              text: "Here are the latest airdrops I'm tracking:\n\n1. Walrus - Decentralized storage protocol\n2. MovEX - DEX with upcoming token\n3. SuiPad - Launchpad platform\n\nWhich one would you like to know more about?",
+              content: "Here are the latest airdrops I'm tracking:\n\n1. Walrus - Decentralized storage protocol\n2. MovEX - DEX with upcoming token\n3. SuiPad - Launchpad platform\n\nWhich one would you like to know more about?",
               timestamp: new Date().toLocaleTimeString(),
               isUser: false
             }];
@@ -324,7 +282,7 @@ const DefiDesktop = () => {
             const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
             return [...withoutThinking, {
               id: Date.now() + 2,
-              text: "Your active liquidity positions:\n\n• SUI/USDC: $32,450 (42% APR)\n• BLUR/USDC: $15,782 (38% APR)\n\nWould you like to check any specific pool's metrics?",
+              content: "Your active liquidity positions:\n\n• SUI/USDC: $32,450 (42% APR)\n• BLUR/USDC: $15,782 (38% APR)\n\nWould you like to check any specific pool's metrics?",
               timestamp: new Date().toLocaleTimeString(),
               isUser: false
             }];
@@ -339,7 +297,7 @@ const DefiDesktop = () => {
             const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
             return [...withoutThinking, {
               id: Date.now() + 2,
-              text: "SUI Market News:\n\n• Price: $1.23 (+5.2%)\n• 24h Volume: $245M\n• TVL: $456M\n• Active Addresses: 125k\n\nKey Events:\n• Mainnet upgrade next week\n• New DEX launching soon",
+              content: "SUI Market News:\n\n• Price: $1.23 (+5.2%)\n• 24h Volume: $245M\n• TVL: $456M\n• Active Addresses: 125k\n\nKey Events:\n• Mainnet upgrade next week\n• New DEX launching soon",
               timestamp: new Date().toLocaleTimeString(),
               isUser: false
             }];
@@ -351,7 +309,7 @@ const DefiDesktop = () => {
             const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
             return [...withoutThinking, {
               id: Date.now() + 2,
-              text: "Current DeFi Trends on Sui:\n\n1. Liquid staking protocols gaining traction\n2. Real-world asset protocols emerging\n3. AI-powered DEX aggregators launching\n4. Cross-chain bridges expanding\n\nWould you like to explore any of these trends?",
+              content: "Current DeFi Trends on Sui:\n\n1. Liquid staking protocols gaining traction\n2. Real-world asset protocols emerging\n3. AI-powered DEX aggregators launching\n4. Cross-chain bridges expanding\n\nWould you like to explore any of these trends?",
               timestamp: new Date().toLocaleTimeString(),
               isUser: false
             }];
@@ -365,7 +323,7 @@ const DefiDesktop = () => {
           const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
           return [...withoutThinking, {
             id: Date.now() + 2,
-            text: "Available commands:\n\n• /check airdrops - View available airdrops\n• /check liquidity - Check your liquidity positions\n• /market - See current DeFi trends\n\nYou can also ask me anything in natural language!",
+            content: "Available commands:\n\n• /check airdrops - View available airdrops\n• /check liquidity - Check your liquidity positions\n• /market - See current DeFi trends\n\nYou can also ask me anything in natural language!",
             timestamp: new Date().toLocaleTimeString(),
             isUser: false
           }];
@@ -383,7 +341,7 @@ const DefiDesktop = () => {
         const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
         return [...withoutThinking, {
           id: Date.now() + 2,
-          text: llmResponse.thinking,
+          content: llmResponse.thinking,
           timestamp: new Date().toLocaleTimeString(),
           isUser: false
         }];
@@ -393,7 +351,7 @@ const DefiDesktop = () => {
       setTimeout(() => {
         setChatMessages(prev => [...prev, {
           id: Date.now() + 3,
-          text: llmResponse.response,
+          content: llmResponse.response,
           timestamp: new Date().toLocaleTimeString(),
           isUser: false
         }]);
@@ -404,7 +362,7 @@ const DefiDesktop = () => {
         const withoutThinking = prev.filter(msg => msg.id !== thinkingMessageId);
         return [...withoutThinking, {
           id: Date.now() + 2,
-          text: llmResponse.response,
+          content: llmResponse.response,
           timestamp: new Date().toLocaleTimeString(),
           isUser: false
         }];
@@ -418,7 +376,7 @@ const DefiDesktop = () => {
     if (message) {
       setChatMessages(prev => [...prev, {
         id: Date.now(),
-        text: message,
+        content: message,
         timestamp: new Date().toLocaleTimeString(),
         isUser: false
       }]);

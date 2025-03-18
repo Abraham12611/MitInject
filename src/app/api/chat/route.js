@@ -1,94 +1,118 @@
 import { NextResponse } from 'next/server';
 import mitsuiCharacter from '@/characters/mitsui.character.json';
+import mockApiService from '@/services/MockApiService';
 
-const WALRUS_AGGREGATOR = process.env.WALRUS_AGGREGATOR || 'https://aggregator.walrus-testnet.walrus.space';
+// Helper function to detect intent
+function detectIntent(message) {
+  const lowerMessage = message.toLowerCase();
 
-async function fetchBlobContent(blobId) {
-  try {
-    console.log('Fetching blob content for:', blobId);
-    const response = await fetch(`${WALRUS_AGGREGATOR}/v1/blobs/${encodeURIComponent(blobId)}`);
-    if (!response.ok) throw new Error(`Failed to fetch blob: ${response.statusText}`);
-    const content = await response.text();
-    console.log('Got blob content:', content.substring(0, 100) + '...');
-    return content;
-  } catch (error) {
-    console.error('Error fetching blob content:', error);
-    return null;
+  // Check for price request
+  if (lowerMessage.includes('price') && lowerMessage.includes('inj')) {
+    return { type: 'price', token: 'INJ' };
   }
+
+  // Check for portfolio request
+  if (lowerMessage.includes('portfolio') || lowerMessage.includes('my holdings')) {
+    return { type: 'portfolio' };
+  }
+
+  // Check for swap request
+  const swapMatch = message.match(/swap (\d+\.?\d*) (\w+) (to|for) (\w+)/i);
+  if (swapMatch) {
+    return {
+      type: 'swap',
+      amount: parseFloat(swapMatch[1]),
+      fromToken: swapMatch[2].toUpperCase(),
+      toToken: swapMatch[4].toUpperCase()
+    };
+  }
+
+  // Default to conversation
+  return { type: 'conversation' };
 }
 
 export async function POST(request) {
   try {
     const body = await request.json();
     const message = body.message;
+    const intent = detectIntent(message);
 
-    const messages = [{
-      role: "system",
-      content: mitsuiCharacter.system
-    }, {
-      role: "user",
-      content: message
-    }];
-
-    // Check if this is a /market command with blob ID
-    const marketCommand = message.match(/^\/market\s+([^\s]+)/);
-    if (marketCommand) {
-      console.log('Handling /market command');
-      const blobId = marketCommand[1];
-      console.log('Extracted blob ID:', blobId);
-      const analysis = await fetchBlobContent(blobId);
-      
-      if (!analysis) {
-        console.log('Failed to fetch analysis');
-        return NextResponse.json({
-          choices: [{
-            message: {
-              role: "assistant",
-              content: "Sorry, I couldn't fetch the market analysis. Please try again later."
-            }
-          }]
-        });
+    switch (intent.type) {
+      case 'price': {
+        const response = await mockApiService.getTokenPrice(intent.token);
+        if (response.success) {
+          return NextResponse.json({
+            choices: [{
+              message: {
+                role: "assistant",
+                content: `Here's the current price information for ${response.data.name} (${response.data.symbol}):\n\nPrice: $${response.data.price}\n24h Change: ${response.data.change24h}%\n24h Volume: $${response.data.volume24h}\nMarket Cap: $${response.data.marketCap}`
+              }
+            }]
+          });
+        }
+        break;
       }
 
-      // Return the analysis as plain text
-      return NextResponse.json({
-        choices: [{
-          message: {
-            role: "assistant",
-            content: "```\n" + analysis + "\n```"
-          }
-        }]
-      });
+      case 'portfolio': {
+        const response = await mockApiService.getUserPortfolio();
+        if (response.success) {
+          const portfolioText = response.data.holdings
+            .map(h => `${h.token}: ${h.amount} ($${h.valueUsd})`)
+            .join('\n');
+          return NextResponse.json({
+            choices: [{
+              message: {
+                role: "assistant",
+                content: `Here's your current portfolio:\n\n${portfolioText}\n\nTotal Value: $${response.data.totalValueUsd}`
+              }
+            }]
+          });
+        }
+        break;
+      }
+
+      case 'swap': {
+        const response = await mockApiService.getSwapPreview(
+          intent.fromToken,
+          intent.toToken,
+          intent.amount
+        );
+        if (response.success) {
+          return NextResponse.json({
+            choices: [{
+              message: {
+                role: "assistant",
+                content: `Here's the swap preview:\n\nFrom: ${intent.amount} ${intent.fromToken}\nTo: ${response.data.toAmount} ${intent.toToken}\nPrice Impact: ${response.data.priceImpact}%\nFee: $${response.data.fee}\n\nWould you like to proceed with this swap?`
+              }
+            }]
+          });
+        }
+        break;
+      }
     }
-    
-    console.log('Handling regular chat message');
-    // Handle regular chat messages
-    const response = await fetch('https://api.atoma.network/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.ATOMA_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        stream: false,
-        model: "deepseek-ai/DeepSeek-R1",
-        messages,
-        max_tokens: 2048
-      })
+
+    // Default response for unknown intents or failed API calls
+    return NextResponse.json({
+      choices: [{
+        message: {
+          role: "assistant",
+          content: mitsuiCharacter.defaultResponse || "I'm here to help you with trading, portfolio management, and market analysis. What would you like to know?"
+        }
+      }]
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return NextResponse.json(data);
-    
   } catch (error) {
     console.error('Error in chat API route:', error);
     return NextResponse.json(
-      { error: 'Failed to process chat request' },
-      { status: 500 }
+      {
+        choices: [{
+          message: {
+            role: "assistant",
+            content: "I apologize, but I encountered an error processing your request. Could you try again?"
+          }
+        }]
+      },
+      { status: 200 }
     );
   }
 }
