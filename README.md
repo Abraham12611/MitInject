@@ -83,7 +83,6 @@ The plan is to create enough timestamp datasets that can be leveraged by the com
 - [General data batch processing scripts](https://github.com/Abraham12611/repo/scripts)
 - [Injective upload implementation](https://github.com/Abraham12611/repo/scripts/push-to-injective.js)
 
-https://github.com/user-attachments/assets/1f745c34-3252-4ee4-a449-11c1745446f0
 
 ### Helix
 Helix is Injective's premier decentralized exchange, providing sophisticated trading functionality for spot and derivative markets. Our Pool Protocol integrates with Helix to enable automated trading strategies through our If-This-Then-That (IFTTT) system.
@@ -114,8 +113,6 @@ The current demonstration allows for basic conditional trading:
 If $INJ is above $20.00
 Then swap 0.1 USDT to USDC
 ```
-
-https://github.com/user-attachments/assets/ad8a89ab-60b8-4f92-af6b-3a11ae8c4a14
 
 ### Astroport
 Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. This integration enables users to access liquid trading pools across multiple Cosmos-based chains, including Terra and Injective.
