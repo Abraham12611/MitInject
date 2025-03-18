@@ -176,25 +176,31 @@ const addPriceVariation = (price) => {
 };
 
 class MockApiService {
-  // Get token price
-  getTokenPrice(symbol) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const token = INJECTIVE_TOKENS[symbol.toUpperCase()];
-        if (token) {
-          token.price = addPriceVariation(token.price);
-          resolve({
-            success: true,
-            data: token
-          });
-        } else {
-          resolve({
-            success: false,
-            error: "Token not found"
-          });
-        }
-      }, 800); // Simulate network delay
-    });
+  // Get token price information
+  async getTokenPrice(token) {
+    // Mock data for INJ token
+    const mockPriceData = {
+      INJ: {
+        name: 'Injective',
+        symbol: 'INJ',
+        price: 42.50,
+        change24h: 5.2,
+        volume24h: '245M',
+        marketCap: '3.4B'
+      }
+    };
+
+    if (mockPriceData[token]) {
+      return {
+        success: true,
+        data: mockPriceData[token]
+      };
+    }
+
+    return {
+      success: false,
+      error: 'Token not found'
+    };
   }
 
   // Get all tokens
@@ -216,35 +222,30 @@ class MockApiService {
   }
 
   // Get user portfolio
-  getUserPortfolio() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Update USD values based on current token prices
-        const portfolio = { ...USER_PORTFOLIO };
-        portfolio.assets = portfolio.assets.map(asset => {
-          const token = INJECTIVE_TOKENS[asset.token];
-          const updatedPrice = addPriceVariation(token.price);
-          return {
-            ...asset,
-            usdValue: +(asset.balance * updatedPrice).toFixed(2)
-          };
-        });
-
-        // Recalculate total value
-        portfolio.totalValue = portfolio.assets.reduce((sum, asset) => sum + asset.usdValue, 0);
-
-        // Update allocations
-        portfolio.assets = portfolio.assets.map(asset => ({
-          ...asset,
-          allocation: +((asset.usdValue / portfolio.totalValue) * 100).toFixed(1)
-        }));
-
-        resolve({
-          success: true,
-          data: portfolio
-        });
-      }, 1200);
-    });
+  async getUserPortfolio() {
+    return {
+      success: true,
+      data: {
+        holdings: [
+          {
+            token: 'INJ',
+            amount: 100,
+            valueUsd: '4,250.00'
+          },
+          {
+            token: 'USDT',
+            amount: 5000,
+            valueUsd: '5,000.00'
+          },
+          {
+            token: 'ETH',
+            amount: 1.5,
+            valueUsd: '3,750.00'
+          }
+        ],
+        totalValueUsd: '13,000.00'
+      }
+    };
   }
 
   // Get transaction history
@@ -260,15 +261,24 @@ class MockApiService {
   }
 
   // Get liquidity pools
-  getLiquidityPools() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          data: LIQUIDITY_POOLS
-        });
-      }, 1100);
-    });
+  async getLiquidityPools() {
+    return {
+      success: true,
+      data: [
+        {
+          tokenA: 'INJ',
+          tokenB: 'USDT',
+          apr: 42,
+          tvl: 32450000
+        },
+        {
+          tokenA: 'ETH',
+          tokenB: 'USDT',
+          apr: 38,
+          tvl: 15782000
+        }
+      ]
+    };
   }
 
   // Get oracle data
@@ -292,51 +302,57 @@ class MockApiService {
     });
   }
 
-  // Simulate swap transaction
-  executeSwap(fromToken, toToken, amount) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const fromTokenData = INJECTIVE_TOKENS[fromToken.toUpperCase()];
-        const toTokenData = INJECTIVE_TOKENS[toToken.toUpperCase()];
+  // Get swap preview
+  async getSwapPreview(fromToken, toToken, amount) {
+    // Mock exchange rates
+    const rates = {
+      'INJ/USDT': 42.50,
+      'ETH/USDT': 2500,
+      'INJ/ETH': 0.017
+    };
 
-        if (!fromTokenData || !toTokenData) {
-          resolve({
-            success: false,
-            error: "One or both tokens not found"
-          });
-          return;
-        }
+    const pair = `${fromToken}/${toToken}`;
+    const reversePair = `${toToken}/${fromToken}`;
 
-        // Calculate exchange rate with a small slippage
-        const rate = toTokenData.price / fromTokenData.price;
-        const slippage = 0.005; // 0.5% slippage
-        const adjustedRate = rate * (1 - slippage);
-        const receivedAmount = +(amount * adjustedRate).toFixed(6);
+    let rate = rates[pair] || (1 / rates[reversePair]);
+    if (!rate) {
+      return {
+        success: false,
+        error: 'Pair not supported'
+      };
+    }
 
-        // Create transaction receipt
-        const receipt = {
-          txHash: "0x" + Math.random().toString(16).substr(2, 40),
-          type: "Swap",
-          from: { token: fromToken.toUpperCase(), amount: +amount },
-          to: { token: toToken.toUpperCase(), amount: receivedAmount },
-          fee: +(amount * 0.003).toFixed(6), // 0.3% fee
-          timestamp: Date.now(),
-          status: "Completed",
-          route: [
-            { type: "Pool", name: `${fromToken.toUpperCase()}-${toToken.toUpperCase()}`, share: "100%" }
-          ],
-          priceImpact: +(slippage * 100).toFixed(2) + "%"
-        };
+    const toAmount = (amount * rate).toFixed(6);
+    return {
+      success: true,
+      data: {
+        fromToken,
+        toToken,
+        fromAmount: amount,
+        toAmount,
+        priceImpact: 0.5,
+        fee: (amount * 0.001).toFixed(2)
+      }
+    };
+  }
 
-        resolve({
-          success: true,
-          data: receipt
-        });
-      }, 2000); // Longer delay to simulate transaction processing
-    });
+  // Execute swap
+  async executeSwap(fromToken, toToken, amount) {
+    const preview = await this.getSwapPreview(fromToken, toToken, amount);
+    if (!preview.success) {
+      return preview;
+    }
+
+    return {
+      success: true,
+      data: {
+        ...preview.data,
+        txHash: '0x' + Math.random().toString(36).substring(2, 15),
+        timestamp: new Date().toISOString()
+      }
+    };
   }
 }
 
-// Create a singleton instance
-const mockApiService = new MockApiService();
-export default mockApiService;
+// Export a singleton instance
+export default new MockApiService();
