@@ -18,4 +18,4 @@ const DesktopIcons = ({ apps, openApp, theme }) => {
   );
 };
 
-export default DesktopIcons; 
+export default DesktopIcons;

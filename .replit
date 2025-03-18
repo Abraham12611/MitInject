@@ -1,12 +1,20 @@
-modules = ["nodejs-20", "web", "rust-stable"]
+modules = ["nodejs-20", "web", "rust-stable", "python-3.10"]
 run = "npm run dev"
 
 [nix]
 channel = "stable-24_05"
 
+[env]
+REPLIT_NODEJS_PACKAGE_LAYER = "1"
+
 [deployment]
-run = ["sh", "-c", "npm run dev"]
+run = ["sh", "-c", "yarn start"]
+build = ["sh", "-c", "yarn build"]
 
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[[ports]]
+localPort = 3001
+externalPort = 3001

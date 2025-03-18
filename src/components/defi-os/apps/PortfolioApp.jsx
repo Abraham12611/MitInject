@@ -3,9 +3,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import { Loader2 } from 'lucide-react';
 import { usePrivyAuth } from '@/contexts/PrivyAuthContext';
 import { getAccountPortfolio, getSpotMarkets, getDerivativeMarkets } from '@/utils/injective-client';
+import { portfolioAnalytics } from '@/services/portfolio-analytics';
+import PortfolioAnalytics from './portfolio/PortfolioAnalytics';
 
 const PortfolioApp = ({ isExpanded, theme }) => {
   const [portfolioData, setPortfolioData] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalValue, setTotalValue] = useState(0);
@@ -24,8 +27,12 @@ const PortfolioApp = ({ isExpanded, theme }) => {
         setIsLoading(true);
         setError(null);
 
-        // Fetch portfolio data
-        const portfolio = await getAccountPortfolio(walletAddress);
+        // Fetch both portfolio data and analytics in parallel
+        const [portfolio, analytics] = await Promise.all([
+          getAccountPortfolio(walletAddress),
+          portfolioAnalytics.getPortfolioAnalytics(walletAddress)
+        ]);
+
         const [spotMarkets, derivativeMarkets] = await Promise.all([
           getSpotMarkets(),
           getDerivativeMarkets()
@@ -33,13 +40,13 @@ const PortfolioApp = ({ isExpanded, theme }) => {
 
         // Create a map of market data for quick lookup
         const marketMap = new Map();
-        spotMarkets.forEach(market => marketMap.set(market.marketId, { 
-          ...market, 
-          type: 'spot' 
+        spotMarkets.forEach(market => marketMap.set(market.marketId, {
+          ...market,
+          type: 'spot'
         }));
-        derivativeMarkets.forEach(market => marketMap.set(market.marketId, { 
-          ...market, 
-          type: 'derivative' 
+        derivativeMarkets.forEach(market => marketMap.set(market.marketId, {
+          ...market,
+          type: 'derivative'
         }));
 
         // Calculate total portfolio value and format positions
@@ -115,6 +122,7 @@ const PortfolioApp = ({ isExpanded, theme }) => {
         setTotalValue(total);
         setTotalChange(finalWeightedChange);
         setPortfolioData(formattedData);
+        setAnalyticsData(analytics);
       } catch (err) {
         console.error('Portfolio fetch error:', err);
         setError('Failed to load portfolio data');
@@ -195,8 +203,18 @@ const PortfolioApp = ({ isExpanded, theme }) => {
           </div>
 
           {/* Expanded Content */}
-          {isExpanded && portfolioData.length > 0 && (
+          {isExpanded && (
             <>
+              {/* Portfolio Analytics */}
+              {analyticsData && (
+                <PortfolioAnalytics
+                  analytics={analyticsData}
+                  isLoading={isLoading}
+                  error={error}
+                  theme={theme}
+                />
+              )}
+
               {/* Pie Chart */}
               <div className="h-64 mt-8">
                 <ResponsiveContainer width="100%" height="100%">
@@ -213,15 +231,15 @@ const PortfolioApp = ({ isExpanded, theme }) => {
                       labelLine={false}
                     >
                       {portfolioData.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
+                        <Cell
+                          key={`cell-${index}`}
                           fill={entry.color}
                           stroke={theme.colors.background}
                           strokeWidth={2}
                         />
                       ))}
                     </Pie>
-                    <Legend 
+                    <Legend
                       formatter={(value, entry) => {
                         const position = portfolioData.find(d => d.name === value);
                         return (
@@ -243,9 +261,9 @@ const PortfolioApp = ({ isExpanded, theme }) => {
               <div className="space-y-4 mt-8">
                 {portfolioData.map((position, index) => (
                   <React.Fragment key={index}>
-                    <div 
-                      className="flex justify-between items-center p-4 rounded-lg" 
-                      style={{ 
+                    <div
+                      className="flex justify-between items-center p-4 rounded-lg"
+                      style={{
                         background: theme.colors.secondary,
                         border: `1px solid ${theme.colors.border}`,
                         borderLeft: `4px solid ${position.color}`
@@ -286,10 +304,10 @@ const PortfolioApp = ({ isExpanded, theme }) => {
                     {position.isOthers && position.tokens && (
                       <div className="ml-4 space-y-2">
                         {position.tokens.map((token, tokenIndex) => (
-                          <div 
+                          <div
                             key={tokenIndex}
-                            className="flex justify-between items-center p-3 rounded-lg" 
-                            style={{ 
+                            className="flex justify-between items-center p-3 rounded-lg"
+                            style={{
                               background: theme.colors.secondary,
                               border: `1px solid ${theme.colors.border}`,
                               opacity: 0.8
