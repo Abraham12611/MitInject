@@ -83,7 +83,6 @@ The plan is to create enough timestamp datasets that can be leveraged by the com
 - [General data batch processing scripts](https://github.com/Abraham12611/repo/scripts)
 - [Injective upload implementation](https://github.com/Abraham12611/repo/scripts/push-to-injective.js)
 
-https://github.com/user-attachments/assets/1f745c34-3252-4ee4-a449-11c1745446f0
 
 ### Helix
 Helix is Injective's premier decentralized exchange, providing sophisticated trading functionality for spot and derivative markets. Our Pool Protocol integrates with Helix to enable automated trading strategies through our If-This-Then-That (IFTTT) system.
@@ -115,7 +114,6 @@ If $INJ is above $20.00
 Then swap 0.1 USDT to USDC
 ```
 
-https://github.com/user-attachments/assets/ad8a89ab-60b8-4f92-af6b-3a11ae8c4a14
 
 ### Astroport
 Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. This integration enables users to access liquid trading pools across multiple Cosmos-based chains, including Terra and Injective.
@@ -180,7 +178,6 @@ Pool Protocol leverages the powerful NordStar framework (based on CAMEL-AI's OWL
 
 Implementation details can be found here:
 - [Injective Analysis System](https://github.com/Abraham12611/MitInject/owl/examples/run_injective_analysis.py): Core market analysis engine for Injective assets
-- [Simple Injective Demo](https://github.com/Abraham12611/MitInject/owl/examples/simple_injective_demo.py): Lightweight demonstration of Injective data analysis
 - [Agent Orchestration Utilities](https://github.com/Abraham12611/MitInject/owl/owl/utils/__init__.py): Framework for coordinating AI agents in market analysis
 
 ### Trend Analysis
