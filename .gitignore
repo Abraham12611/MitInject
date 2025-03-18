@@ -96,6 +96,7 @@ context/
 # Nuxt.js build / generate output
 .nuxt
 dist
+dist-tauri
 
 # Gatsby files
 .cache/
