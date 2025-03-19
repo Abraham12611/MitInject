@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
+import chatService from '@/services/ChatService';
 
 const COMMAND_SUGGESTIONS = [
   { command: '/check airdrops', description: 'Check available airdrops' },
   { command: '/check liquidity', description: 'Check liquidity positions' },
   { command: '/market', description: 'View market trends based on tweets' },
+  { command: '/price inj', description: 'Get INJ token price' },
+  { command: '/portfolio', description: 'View your portfolio' },
+  { command: '/swap 10 inj to usdt', description: 'Swap tokens on Injective' },
   { command: '/help', description: 'Show available commands' }
 ];
 
@@ -28,8 +32,8 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
   const inputRef = useRef(null);
 
   const terminalSpring = useSpring({
-    width: isOpen ? '400px' : '0px',
-    opacity: isOpen ? 1 : 0,
+    width: '400px',
+    opacity: 1,
     config: {
       tension: 220,
       friction: 24
@@ -47,18 +51,29 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
       commandToSubmit = filteredSuggestions[selectedSuggestionIndex].command;
     }
 
-    // Handle /market command
-    if (commandToSubmit === '/market') {
-      const blobId = await getLatestBlobId();
-      if (blobId) {
-        onSubmit(`/market ${blobId}`);
-      } else {
-        onSubmit('Error: Could not fetch market analysis');
-      }
-    } else {
-      onSubmit(commandToSubmit);
+    // Handle /price shortcut
+    if (commandToSubmit === '/price inj') {
+      commandToSubmit = 'Get me the price of INJ';
     }
-    
+    // Handle /portfolio shortcut
+    else if (commandToSubmit === '/portfolio') {
+      commandToSubmit = 'Show me my portfolio';
+    }
+    // Handle /swap shortcut
+    else if (commandToSubmit.startsWith('/swap')) {
+      // Extract the swap parameters from the command
+      const parts = commandToSubmit.split(' ');
+      if (parts.length >= 5) {
+        const amount = parts[1];
+        const fromToken = parts[2];
+        const toToken = parts[4];
+        commandToSubmit = `swap ${amount} ${fromToken} to ${toToken}`;
+      } else {
+        commandToSubmit = 'swap 10 INJ to USDT';
+      }
+    }
+
+    onSubmit(commandToSubmit);
     setInput('');
     setShowSuggestions(false);
     setSelectedSuggestionIndex(-1);
@@ -99,14 +114,14 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
       case 'ArrowUp':
       case 'KeyW':
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => 
+        setSelectedSuggestionIndex(prev =>
           prev <= 0 ? filteredSuggestions.length - 1 : prev - 1
         );
         break;
       case 'ArrowDown':
       case 'KeyS':
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => 
+        setSelectedSuggestionIndex(prev =>
           prev >= filteredSuggestions.length - 1 ? 0 : prev + 1
         );
         break;
@@ -126,17 +141,17 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
   };
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isOpen]);
+  }, []);
 
   return (
     <animated.div style={terminalSpring} className="overflow-visible relative">
       <form onSubmit={handleSubmit} className="h-full">
-        <div 
+        <div
           className="flex items-center gap-2 rounded-lg px-3 py-1.5"
-          style={{ 
+          style={{
             background: theme ? `${theme.colors.secondary}80` : 'transparent',
             borderColor: theme ? theme.colors.border : 'transparent',
             boxShadow: theme.colors.effects?.glow
@@ -150,7 +165,7 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             className="flex-1 bg-transparent text-sm outline-none min-w-[300px]"
-            style={{ 
+            style={{
               color: theme ? theme.colors?.text?.primary || theme.colors.text : 'inherit',
               '::placeholder': { color: theme ? theme.colors?.text?.secondary || theme.colors.text : 'inherit' }
             }}
@@ -160,9 +175,9 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
 
         {/* Command suggestions */}
         {showSuggestions && filteredSuggestions.length > 0 && (
-          <div 
-            className="absolute bottom-full left-0 w-full mb-2 rounded-lg overflow-hidden"
-            style={{ 
+          <div
+            className="absolute top-full left-0 w-full mt-2 rounded-lg overflow-hidden"
+            style={{
               background: theme ? `${theme.colors.secondary}E6` : 'rgba(0,0,0,0.9)',
               borderColor: theme ? theme.colors.border : 'transparent',
               boxShadow: theme.colors.effects?.glow
@@ -175,7 +190,7 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
                   index === selectedSuggestionIndex ? 'bg-black/30' : ''
                 }`}
                 onClick={() => handleSuggestionClick(suggestion.command)}
-                style={{ 
+                style={{
                   color: theme ? theme.colors?.text?.primary || theme.colors.text : 'inherit',
                   outline: index === selectedSuggestionIndex ? `1px solid ${theme.colors.accent}` : 'none',
                   boxShadow: index === selectedSuggestionIndex ? `0 0 10px ${theme.colors.accent}40` : 'none'
@@ -192,4 +207,4 @@ const TaskbarTerminal = ({ isOpen, onClose, onSubmit, onChange, theme }) => {
   );
 };
 
-export default TaskbarTerminal; 
+export default TaskbarTerminal;

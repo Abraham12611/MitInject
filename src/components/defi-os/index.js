@@ -13,3 +13,6 @@ export { default as AnimationStyles } from './AnimationStyles';
 export { default as StartMenu } from './StartMenu';
 export { default as WindowManager } from './WindowManager';
 export { default as SettingsPopup } from './SettingsPopup';
+export { default as ChatDataDisplay } from './ChatDataDisplay';
+export { default as AgentThinking } from './AgentThinking';
+export { TokenPriceDisplay, PortfolioDisplay, SwapDisplay } from './ChatDataDisplay';

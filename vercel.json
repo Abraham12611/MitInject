@@ -3,5 +3,8 @@
     "env": {
       "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
     }
+  },
+  "dependencies": {
+    "utf-8-validate": "npm:utf-8-validate-browser@^1.0.0"
   }
 }

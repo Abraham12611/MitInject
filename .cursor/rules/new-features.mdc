@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# The rules while implementing @FEATURES_AND_INTEGRATIONS.md:
+
+- Always make sure to check if a component related to the feature you want to integrate exist, if it does not exist then, you are allowed to create new components if not just use the already existing component.
+
+- Always make sure that all integrationa are factual, real and accurate, DO NOT MAKE UP ANY. If you are not sure about any injective integration, please refer to @extra/links.md for links to the documentation you need.
