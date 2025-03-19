@@ -114,6 +114,7 @@ If $INJ is above $20.00
 Then swap 0.1 USDT to USDC
 ```
 
+
 ### Astroport
 Astroport is a leading automated market maker (AMM) in the Cosmos ecosystem that Pool Protocol integrates with to expand cross-chain trading capabilities. This integration enables users to access liquid trading pools across multiple Cosmos-based chains, including Terra and Injective.
 
@@ -177,7 +178,6 @@ Pool Protocol leverages the powerful NordStar framework (based on CAMEL-AI's OWL
 
 Implementation details can be found here:
 - [Injective Analysis System](https://github.com/Abraham12611/MitInject/owl/examples/run_injective_analysis.py): Core market analysis engine for Injective assets
-- [Simple Injective Demo](https://github.com/Abraham12611/MitInject/owl/examples/simple_injective_demo.py): Lightweight demonstration of Injective data analysis
 - [Agent Orchestration Utilities](https://github.com/Abraham12611/MitInject/owl/owl/utils/__init__.py): Framework for coordinating AI agents in market analysis
 
 ### Trend Analysis
